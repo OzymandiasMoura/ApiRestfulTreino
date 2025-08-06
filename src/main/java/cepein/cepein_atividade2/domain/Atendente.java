@@ -13,15 +13,15 @@ public class Atendente
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idGarcom;
+    private Integer idAtendente;
 
     @NonNull
     @NotBlank
-    private String nomeGarcom;
+    private String nome;
 
     @NonNull
     @NotBlank
     @Column(unique = true)
-    private String cpfGarcom;
+    private String cpf;
 
 }
