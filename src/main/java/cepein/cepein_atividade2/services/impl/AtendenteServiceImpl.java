@@ -9,6 +9,7 @@ import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,12 @@ public class AtendenteServiceImpl implements AtendenteService
     {
         findByCpfValidation(atendente);
         return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
+    }
+
+    @Override
+    public List<Atendente> findAll()
+    {
+        return repository.findAll();
     }
 
     @Override
