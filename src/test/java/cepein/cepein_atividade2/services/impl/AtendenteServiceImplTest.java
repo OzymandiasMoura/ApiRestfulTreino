@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AtendenteServiceImplTest
 {
+    public static final String notFoundMessage = "Atendente não encontrado!";
+    public static final String dataIntegrityMessage = "Cpf já existe no sistema!";
     @InjectMocks
     AtendenteServiceImpl service;
 
@@ -63,7 +65,7 @@ class AtendenteServiceImplTest
     @Test
     void whenFindByIdThenThrowObjectNotFoundException()
     {
-        Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+        Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException(notFoundMessage));
 
         try
         {
@@ -72,7 +74,7 @@ class AtendenteServiceImplTest
         {
             assertNotNull(ex);
             assertEquals(ObjectNotFoundException.class, ex.getClass());
-            assertEquals("Atendente não encontrado!", ex.getMessage());
+            assertEquals(notFoundMessage, ex.getMessage());
         }
     }
 
@@ -93,7 +95,7 @@ class AtendenteServiceImplTest
     @Test
     void whenCreateThenThrowDataIntegrityException()
     {
-        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException("Cpf já existe no sistema!"));
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
 
         try
         {
@@ -102,7 +104,7 @@ class AtendenteServiceImplTest
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());
-            assertEquals("Cpf já existe no sistema!", ex.getMessage());
+            assertEquals(dataIntegrityMessage, ex.getMessage());
         }
     }
 
@@ -138,7 +140,7 @@ class AtendenteServiceImplTest
     @Test
     void whenUpdateThenThrowDataIntegrityException()
     {
-        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException("Cpf já existe no sistema!"));
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
 
         try
         {
@@ -147,7 +149,7 @@ class AtendenteServiceImplTest
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());
-            assertEquals("Cpf já existe no sistema!", ex.getMessage());
+            assertEquals(dataIntegrityMessage, ex.getMessage());
         }
     }
 
@@ -168,7 +170,7 @@ class AtendenteServiceImplTest
     @Test
     void whenFindByCpfThenObjectNotFoundException()
     {
-        Mockito.when(repository.findByCpf(Mockito.any())).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+        Mockito.when(repository.findByCpf(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
 
         try
         {
@@ -178,7 +180,24 @@ class AtendenteServiceImplTest
         {
             assertNotNull(ex);
             assertEquals(ObjectNotFoundException.class, ex.getClass());
-            assertEquals("Atendente não encontrado!", ex.getMessage());
+            assertEquals(notFoundMessage, ex.getMessage());
+        }
+    }
+
+    @Test
+    void whenValidationByCpfThenThrowDataIntegrityException()
+    {
+        Mockito.when(repository.findByCpf(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+
+        try
+        {
+            service.validationByCpf(atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(DataIntegrityException.class, ex.getClass());
+            assertEquals(dataIntegrityMessage, ex.getMessage());
         }
     }
 
