@@ -11,5 +11,5 @@ public interface AtendenteService
     List<Atendente> findAll();
     Atendente update(AtendenteDto atendente);
     Atendente findByCpf(AtendenteDto atendente);
-    void findByCpfValidation(AtendenteDto atendente);
+    void validationByCpf(AtendenteDto atendente);
 }

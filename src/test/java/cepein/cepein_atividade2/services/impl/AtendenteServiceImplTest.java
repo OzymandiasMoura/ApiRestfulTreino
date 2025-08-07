@@ -68,8 +68,7 @@ class AtendenteServiceImplTest
         try
         {
             service.findById(id);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(ObjectNotFoundException.class, ex.getClass());
@@ -82,7 +81,7 @@ class AtendenteServiceImplTest
     {
         Mockito.when(repository.save(Mockito.any())).thenReturn(atendente);
 
-        Atendente response =service.create(atendenteDto);
+        Atendente response = service.create(atendenteDto);
 
         assertNotNull(response);
         assertEquals(Atendente.class, response.getClass());
@@ -99,8 +98,7 @@ class AtendenteServiceImplTest
         try
         {
             service.create(atendenteDto);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());
@@ -145,8 +143,7 @@ class AtendenteServiceImplTest
         try
         {
             service.update(atendenteDto);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());
@@ -168,5 +165,21 @@ class AtendenteServiceImplTest
         assertEquals(cpf, response.getCpf());
     }
 
+    @Test
+    void whenFindByCpfThenObjectNotFoundException()
+    {
+        Mockito.when(repository.findByCpf(Mockito.any())).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+
+        try
+        {
+            service.findByCpf(atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Atendente não encontrado!", ex.getMessage());
+        }
+    }
 
 }

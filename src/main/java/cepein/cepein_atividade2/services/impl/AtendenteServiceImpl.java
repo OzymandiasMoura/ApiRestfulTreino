@@ -28,7 +28,7 @@ public class AtendenteServiceImpl implements AtendenteService
     @Override
     public Atendente create(AtendenteDto atendente)
     {
-        findByCpfValidation(atendente);
+        validationByCpf(atendente);
         return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
     }
 
@@ -41,7 +41,7 @@ public class AtendenteServiceImpl implements AtendenteService
     @Override
     public Atendente update(AtendenteDto atendente)
     {
-        findByCpfValidation(atendente);
+        validationByCpf(atendente);
         return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
     }
 
@@ -53,10 +53,10 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
-    public void findByCpfValidation(AtendenteDto atendente)
+    public void validationByCpf(AtendenteDto atendente)
     {
         Optional<Atendente> optional = repository.findByCpf(atendente.getCpf());
-        if(optional.isPresent() && optional.get().getCpf().equals(atendente.getCpf()))
+        if(optional.isPresent() && optional.get().getIdAtendente().equals(atendente.getIdAtendente()))
         {
             throw new DataIntegrityException("Cpf já cadastrado no sistema!");
         }
