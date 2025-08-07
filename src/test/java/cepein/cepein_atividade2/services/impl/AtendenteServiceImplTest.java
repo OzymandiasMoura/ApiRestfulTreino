@@ -3,6 +3,7 @@ package cepein.cepein_atividade2.services.impl;
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
+import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,23 @@ class AtendenteServiceImplTest
         assertEquals(id, response.getIdAtendente());
         assertEquals(nome, response.getNome());
         assertEquals(cpf, response.getCpf());
+    }
+
+    @Test
+    void whenFindByCpfValidationThenThrowObjectNotFoundException()
+    {
+        Mockito.when(repository.findByCpf(cpf)).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+
+        try
+        {
+            service.findById(atendenteDto.getIdAtendente());
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Atendente não encontrado!", ex.getMessage());
+        }
     }
 
     private void startAtendentes()
