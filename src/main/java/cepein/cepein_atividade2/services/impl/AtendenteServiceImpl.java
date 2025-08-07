@@ -4,6 +4,7 @@ import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
 import cepein.cepein_atividade2.services.AtendenteService;
+import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,15 @@ public class AtendenteServiceImpl implements AtendenteService
     @Override
     public Atendente findById(Integer id)
     {
-        //todo: escrever um teste de erro para substituir o null
         Optional<Atendente> atendente = repository.findById(id);
         return atendente.orElseThrow(() -> new ObjectNotFoundException("Atendente não encontrado!"));
+    }
+
+    @Override
+    public Atendente create(AtendenteDto atendente)
+    {
+        findByCpfValidation(atendente);
+        return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
     }
 
     @Override
@@ -30,7 +37,7 @@ public class AtendenteServiceImpl implements AtendenteService
         Optional<Atendente> optional = repository.findByCpf(atendente.getCpf());
         if(optional.isPresent() && optional.get().getCpf().equals(atendente.getCpf()))
         {
-            throw new ObjectNotFoundException("Mensagem.");
+            throw new DataIntegrityException("Mensagem.");
         }
     }
 

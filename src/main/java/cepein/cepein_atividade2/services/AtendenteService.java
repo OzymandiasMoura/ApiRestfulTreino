@@ -6,5 +6,6 @@ import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 public interface AtendenteService
 {
     Atendente findById(Integer id);
+    Atendente create(AtendenteDto atendente);
     void findByCpfValidation(AtendenteDto atendente);
 }
