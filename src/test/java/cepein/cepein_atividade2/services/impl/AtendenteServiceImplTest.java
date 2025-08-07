@@ -55,6 +55,23 @@ class AtendenteServiceImplTest
     }
 
     @Test
+    void whenFindByIdThenThrowObjectNotFoundException()
+    {
+        Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+
+        try
+        {
+            service.findById(id);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Atendente não encontrado!", ex.getMessage());
+        }
+    }
+
+    @Test
     void whenCreateAtendenteReturnAtendente()
     {
         Mockito.when(repository.save(Mockito.any())).thenReturn(atendente);
