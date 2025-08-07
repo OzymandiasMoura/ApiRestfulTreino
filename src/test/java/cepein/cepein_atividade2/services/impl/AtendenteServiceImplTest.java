@@ -5,15 +5,14 @@ import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -100,6 +99,21 @@ class AtendenteServiceImplTest
             assertEquals(DataIntegrityException.class, ex.getClass());
             assertEquals("Cpf já existe no sistema!", ex.getMessage());
         }
+    }
+
+    @Test
+    void whenFindAllThenReturnListOfAtendentes()
+    {
+        Mockito.when(repository.findAll()).thenReturn(List.of(atendente));
+
+        List<Atendente> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(Atendente.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdAtendente());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(cpf, response.get(0).getCpf());
+        assertEquals(1, response.size());
     }
 
     private void startAtendentes()
