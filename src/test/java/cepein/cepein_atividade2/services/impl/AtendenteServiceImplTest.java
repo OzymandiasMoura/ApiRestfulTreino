@@ -116,6 +116,20 @@ class AtendenteServiceImplTest
         assertEquals(1, response.size());
     }
 
+    @Test
+    void whenUpdateAtendenteReturnAtendente()
+    {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(atendente);
+
+        Atendente response = service.update(atendenteDto);
+
+        assertNotNull(response);
+        assertEquals(Atendente.class, response.getClass());
+        assertEquals(id, response.getIdAtendente());
+        assertEquals(nome, response.getNome());
+        assertEquals(cpf, response.getCpf());
+    }
+
     private void startAtendentes()
     {
         atendente = new Atendente(id, nome, cpf);

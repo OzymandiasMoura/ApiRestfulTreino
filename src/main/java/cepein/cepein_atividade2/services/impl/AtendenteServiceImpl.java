@@ -39,6 +39,13 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
+    public Atendente update(AtendenteDto atendente)
+    {
+        findByCpfValidation(atendente);
+        return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
+    }
+
+    @Override
     public void findByCpfValidation(AtendenteDto atendente)
     {
         Optional<Atendente> optional = repository.findByCpf(atendente.getCpf());

@@ -9,5 +9,6 @@ public interface AtendenteService
     Atendente findById(Integer id);
     Atendente create(AtendenteDto atendente);
     List<Atendente> findAll();
+    Atendente update(AtendenteDto atendente);
     void findByCpfValidation(AtendenteDto atendente);
 }
