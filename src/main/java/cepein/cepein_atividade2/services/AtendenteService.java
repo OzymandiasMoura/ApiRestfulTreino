@@ -10,5 +10,6 @@ public interface AtendenteService
     Atendente create(AtendenteDto atendente);
     List<Atendente> findAll();
     Atendente update(AtendenteDto atendente);
+    Atendente findByCpf(AtendenteDto atendente);
     void findByCpfValidation(AtendenteDto atendente);
 }

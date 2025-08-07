@@ -39,6 +39,13 @@ class AtendenteServiceImplTest
         startAtendentes();
     }
 
+    private void startAtendentes()
+    {
+        atendente = new Atendente(id, nome, cpf);
+        atendenteDto = new AtendenteDto(id, nome, cpf);
+        atendenteOptional = Optional.of(new Atendente(id, nome, cpf));
+    }
+
     @Test
     void whenFindByIdReturnAtendente()
     {
@@ -130,10 +137,36 @@ class AtendenteServiceImplTest
         assertEquals(cpf, response.getCpf());
     }
 
-    private void startAtendentes()
+    @Test
+    void whenUpdateThenThrowDataIntegrityException()
     {
-        atendente = new Atendente(id, nome, cpf);
-        atendenteDto = new AtendenteDto(id, nome, cpf);
-        atendenteOptional = Optional.of(new Atendente(id, nome, cpf));
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException("Cpf já existe no sistema!"));
+
+        try
+        {
+            service.update(atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(DataIntegrityException.class, ex.getClass());
+            assertEquals("Cpf já existe no sistema!", ex.getMessage());
+        }
     }
+
+    @Test
+    void whenFindByCpfThenReturnOptionalAtendente()
+    {
+        Mockito.when(repository.findByCpf(Mockito.any())).thenReturn(atendenteOptional);
+
+        Atendente response = service.findByCpf(atendenteDto);
+
+        assertNotNull(response);
+        assertEquals(Atendente.class, response.getClass());
+        assertEquals(id, response.getIdAtendente());
+        assertEquals(nome, response.getNome());
+        assertEquals(cpf, response.getCpf());
+    }
+
+
 }
