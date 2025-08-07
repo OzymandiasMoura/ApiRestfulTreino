@@ -3,6 +3,7 @@ package cepein.cepein_atividade2.services.impl;
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
+import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ class AtendenteServiceImplTest
     @Test
     void whenFindByIdReturnAtendente()
     {
-        Mockito.when(repository.findById(id)).thenReturn(atendenteOptional);
+        Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(atendenteOptional);
 
         Atendente response = service.findById(id);
 
@@ -54,19 +55,33 @@ class AtendenteServiceImplTest
     }
 
     @Test
-    void whenFindByCpfValidationThenThrowObjectNotFoundException()
+    void whenCreateAtendenteReturnAtendente()
     {
-        Mockito.when(repository.findByCpf(cpf)).thenThrow(new ObjectNotFoundException("Atendente não encontrado!"));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(atendente);
+
+        Atendente response =service.create(atendenteDto);
+
+        assertNotNull(response);
+        assertEquals(Atendente.class, response.getClass());
+        assertEquals(id, response.getIdAtendente());
+        assertEquals(nome, response.getNome());
+        assertEquals(cpf, response.getCpf());
+    }
+
+    @Test
+    void whenCreateThenThrowDataIntegrityException()
+    {
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException("Cpf já existe no sistema!"));
 
         try
         {
-            service.findById(atendenteDto.getIdAtendente());
+            service.create(atendenteDto);
         }
         catch (Exception ex)
         {
             assertNotNull(ex);
-            assertEquals(ObjectNotFoundException.class, ex.getClass());
-            assertEquals("Atendente não encontrado!", ex.getMessage());
+            assertEquals(DataIntegrityException.class, ex.getClass());
+            assertEquals("Cpf já existe no sistema!", ex.getMessage());
         }
     }
 
