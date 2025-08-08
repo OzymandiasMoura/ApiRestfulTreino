@@ -200,4 +200,13 @@ class AtendenteServiceImplTest
             assertEquals(dataIntegrityMessage, ex.getMessage());
         }
     }
+
+    @Test
+    void whenDeleteThenSuccess()
+    {
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(atendenteOptional);
+        Mockito.doNothing().when(repository).delete(Mockito.any());
+        service.delete(atendenteDto);
+        Mockito.verify(repository, Mockito.times(1)).deleteById(id);
+    }
 }
