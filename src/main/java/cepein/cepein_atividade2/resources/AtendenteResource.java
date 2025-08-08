@@ -26,13 +26,11 @@ public class AtendenteResource
         return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 
-    @PostMapping
-    public ResponseEntity<AtendenteDto> create(@RequestBody AtendenteDto atendenteDto)
+    @GetMapping(value = "/{cpf}")
+    public ResponseEntity<AtendenteDto> findByCpf(@PathVariable String cpf)
     {
-        Atendente atendente = service.create(atendenteDto);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(atendente.getIdAtendente()).toUri();
-        return ResponseEntity.created(location).build();
+        Atendente atendente = service.findByCpf(cpf);
+        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 
     @GetMapping
@@ -44,17 +42,19 @@ public class AtendenteResource
         return ResponseEntity.ok().body(atendentes);
     }
 
+    @PostMapping
+    public ResponseEntity<AtendenteDto> create(@RequestBody AtendenteDto atendenteDto)
+    {
+        Atendente atendente = service.create(atendenteDto);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(atendente.getIdAtendente()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<AtendenteDto> update(@PathVariable Integer id, @RequestBody AtendenteDto atendenteDto)
     {
         Atendente atendente = service.update(atendenteDto);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
-    }
-
-    @GetMapping(value = "/{cpf}")
-    public ResponseEntity<AtendenteDto> findByCpf(@PathVariable String cpf)
-    {
-        Atendente atendente = service.findByCpf(cpf);
         return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 

@@ -17,10 +17,6 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class AtendenteResourceTest
 {
@@ -60,7 +56,7 @@ class AtendenteResourceTest
     }
 
     @Test
-    void whenFindByIdThenReturnOk()
+    void whenFindByIdThenOk()
     {
         Mockito.when(service.findById(Mockito.anyInt())).thenReturn(atendente);
 
@@ -95,28 +91,4 @@ class AtendenteResourceTest
         }
     }
 
-    @Test
-    void createAtendente()
-    {
-    }
-
-    @Test
-    void findAll()
-    {
-    }
-
-    @Test
-    void update()
-    {
-    }
-
-    @Test
-    void delete()
-    {
-    }
-
-    @Test
-    void softDelete()
-    {
-    }
 }
