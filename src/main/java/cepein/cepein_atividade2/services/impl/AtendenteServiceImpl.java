@@ -62,5 +62,12 @@ public class AtendenteServiceImpl implements AtendenteService
         }
     }
 
+    @Override
+    public void delete(AtendenteDto atendente)
+    {
+        findById(atendente.getIdAtendente());
+        repository.deleteById(atendente.getIdAtendente());
+    }
+
 
 }

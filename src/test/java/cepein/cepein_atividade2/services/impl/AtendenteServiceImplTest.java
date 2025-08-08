@@ -200,5 +200,4 @@ class AtendenteServiceImplTest
             assertEquals(dataIntegrityMessage, ex.getMessage());
         }
     }
-
 }
