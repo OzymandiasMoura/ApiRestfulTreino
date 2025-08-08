@@ -27,7 +27,7 @@ public class AtendenteResource
     }
 
     @PostMapping
-    public ResponseEntity<AtendenteDto> createAtendente(@RequestBody AtendenteDto atendenteDto)
+    public ResponseEntity<AtendenteDto> create(@RequestBody AtendenteDto atendenteDto)
     {
         Atendente atendente = service.create(atendenteDto);
 
@@ -51,6 +51,13 @@ public class AtendenteResource
         return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 
+    @GetMapping(value = "/{cpf}")
+    public ResponseEntity<AtendenteDto> findByCpf(@PathVariable String cpf)
+    {
+        Atendente atendente = service.findByCpf(cpf);
+        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<AtendenteDto> delete(@PathVariable Integer id)
     {
@@ -65,6 +72,5 @@ public class AtendenteResource
     {
         Atendente atendente = service.softDelete(atendenteDto);
         return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
-
     }
 }
