@@ -46,9 +46,9 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
-    public Atendente findByCpf(AtendenteDto atendente)
+    public Atendente findByCpf(String cpf)
     {
-        Optional<Atendente> atendente1 = repository.findByCpf(atendente.getCpf());
+        Optional<Atendente> atendente1 = repository.findByCpf(cpf);
         return atendente1.orElseThrow(() -> new ObjectNotFoundException("Atendente não encontrado!"));
     }
 

@@ -10,7 +10,7 @@ public interface AtendenteService
     Atendente create(AtendenteDto atendente);
     List<Atendente> findAll();
     Atendente update(AtendenteDto atendente);
-    Atendente findByCpf(AtendenteDto atendente);
+    Atendente findByCpf(String cpf);
     void validationByCpf(AtendenteDto atendente);
     void delete(AtendenteDto atendente);
     Atendente softDelete(AtendenteDto atendente);
