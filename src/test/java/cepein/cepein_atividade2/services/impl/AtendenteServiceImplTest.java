@@ -163,7 +163,7 @@ class AtendenteServiceImplTest
     {
         Mockito.when(repository.findByCpf(Mockito.any())).thenReturn(atendenteOptional);
 
-        Atendente response = service.findByCpf(atendenteDto);
+        Atendente response = service.findByCpf(cpf);
 
         assertNotNull(response);
         assertEquals(Atendente.class, response.getClass());
@@ -179,7 +179,7 @@ class AtendenteServiceImplTest
 
         try
         {
-            service.findByCpf(atendenteDto);
+            service.findByCpf(cpf);
         } catch (Exception ex)
         {
             assertNotNull(ex);
