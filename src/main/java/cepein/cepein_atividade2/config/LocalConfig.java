@@ -18,10 +18,10 @@ public class LocalConfig
     @Bean
     public List<Atendente> startAtendenteDb()
     {
-            Atendente a1 = new Atendente("Pedro", "11111111111");
-            Atendente a2 = new Atendente("João", "11111111112");
-            Atendente a3 = new Atendente("Miguel", "11111111113");
-            Atendente a4 = new Atendente("Flavia", "11111111114");
+            Atendente a1 = new Atendente("Pedro", "11111111111", true);
+            Atendente a2 = new Atendente("João", "11111111112", true);
+            Atendente a3 = new Atendente("Miguel", "11111111113", false);
+            Atendente a4 = new Atendente("Flavia", "11111111114", true);
 
             return atendenteRepository.saveAll(List.of(a1, a2, a3, a4));
     }

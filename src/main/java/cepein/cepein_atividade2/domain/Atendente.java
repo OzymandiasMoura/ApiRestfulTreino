@@ -24,4 +24,18 @@ public class Atendente
     @Column(unique = true)
     private String cpf;
 
+    @NonNull
+    private Boolean ativo;
+
+    public Atendente(String nome, String cpf)
+    {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.ativo = true;
+    }
+
+    public void desativarAtendente()
+    {
+        setAtivo(false);
+    }
 }

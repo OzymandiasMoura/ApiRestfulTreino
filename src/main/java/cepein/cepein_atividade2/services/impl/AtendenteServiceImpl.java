@@ -42,7 +42,7 @@ public class AtendenteServiceImpl implements AtendenteService
     public Atendente update(AtendenteDto atendente)
     {
         validationByCpf(atendente);
-        return repository.save(new Atendente(atendente.getNome(), atendente.getCpf()));
+        return repository.save(new Atendente(atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 
     @Override
@@ -69,5 +69,13 @@ public class AtendenteServiceImpl implements AtendenteService
         repository.deleteById(atendente.getIdAtendente());
     }
 
+    @Override
+    public Atendente softDelete(AtendenteDto atendente)
+    {
+        Atendente atendente1 = findById(atendente.getIdAtendente());
+        atendente1.desativarAtendente();
+        update(new AtendenteDto(atendente1.getIdAtendente(), atendente1.getNome(), atendente1.getCpf(), atendente1.getAtivo()));
 
+        return atendente1;
+    }
 }

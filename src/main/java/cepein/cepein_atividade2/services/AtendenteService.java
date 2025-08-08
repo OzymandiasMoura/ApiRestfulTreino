@@ -13,4 +13,5 @@ public interface AtendenteService
     Atendente findByCpf(AtendenteDto atendente);
     void validationByCpf(AtendenteDto atendente);
     void delete(AtendenteDto atendente);
+    Atendente softDelete(AtendenteDto atendente);
 }

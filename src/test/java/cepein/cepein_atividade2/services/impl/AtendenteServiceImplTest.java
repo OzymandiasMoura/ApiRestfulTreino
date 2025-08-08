@@ -11,11 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.Optional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class AtendenteServiceImplTest
 {
     public static final String notFoundMessage = "Atendente não encontrado!";
@@ -33,6 +36,7 @@ class AtendenteServiceImplTest
     private final static Integer id = 1;
     private final static String nome = "Pedro";
     private final static String cpf = "11111111111";
+    private final static Boolean ativo = true;
 
     @BeforeEach
     void setUp()
@@ -43,9 +47,9 @@ class AtendenteServiceImplTest
 
     private void startAtendentes()
     {
-        atendente = new Atendente(id, nome, cpf);
-        atendenteDto = new AtendenteDto(id, nome, cpf);
-        atendenteOptional = Optional.of(new Atendente(id, nome, cpf));
+        atendente = new Atendente(id, nome, cpf, ativo);
+        atendenteDto = new AtendenteDto(id, nome, cpf, ativo);
+        atendenteOptional = Optional.of(new Atendente(id, nome, cpf, ativo));
     }
 
     @Test
@@ -60,6 +64,7 @@ class AtendenteServiceImplTest
         assertEquals(id, response.getIdAtendente());
         assertEquals(nome, response.getNome());
         assertEquals(cpf, response.getCpf());
+        assertEquals(ativo, response.getAtivo());
     }
 
     @Test
@@ -175,8 +180,7 @@ class AtendenteServiceImplTest
         try
         {
             service.findByCpf(atendenteDto);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(ObjectNotFoundException.class, ex.getClass());
@@ -192,8 +196,7 @@ class AtendenteServiceImplTest
         try
         {
             service.validationByCpf(atendenteDto);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());
@@ -217,6 +220,36 @@ class AtendenteServiceImplTest
         try
         {
             service.delete(atendenteDto);
+        } catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(notFoundMessage, ex.getMessage());
+        }
+    }
+
+    @Test
+    void whenSoftDeleteThenUpdateSuccess()
+    {
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(atendenteOptional);
+
+        Atendente response = service.softDelete(atendenteDto);
+
+        assertNotNull(response);
+        assertEquals(Atendente.class, response.getClass());
+        assertEquals(id, response.getIdAtendente());
+        assertEquals(nome, response.getNome());
+        assertEquals(cpf, response.getCpf());
+        assertEquals(false, response.getAtivo());
+    }
+
+    @Test
+    void whenSoftDeleteThenSoftDelete()
+    {
+        Mockito.when(repository.findById(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+        try
+        {
+            Atendente response = service.softDelete(atendenteDto);
         }
         catch (Exception ex)
         {

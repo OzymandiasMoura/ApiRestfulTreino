@@ -21,6 +21,6 @@ public class AtendenteResource
     public ResponseEntity<AtendenteDto> findById(@PathVariable Integer id)
     {
         Atendente atendente = service.findById(id);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf()));
+        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 }

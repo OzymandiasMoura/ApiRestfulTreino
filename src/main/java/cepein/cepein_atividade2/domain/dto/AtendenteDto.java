@@ -13,4 +13,5 @@ public class AtendenteDto
     private Integer idAtendente;
     private String nome;
     private String cpf;
+    private Boolean ativo;
 }
