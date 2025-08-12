@@ -41,7 +41,6 @@ class AtendenteResourceTest
     public static final String dataIntegrityMessage = "Cpf já existe no sistema!";
 
 
-
     @BeforeEach
     void setUp()
     {
@@ -82,6 +81,40 @@ class AtendenteResourceTest
         try
         {
             resource.findById(id);
+        } catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(notFoundMessage, ex.getMessage());
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+        }
+    }
+
+    @Test
+    void whenFindByCpfThenReturnSuccess()
+    {
+        Mockito.when(service.findByCpf(Mockito.anyString())).thenReturn(atendente);
+        ResponseEntity<AtendenteDto> response = resource.findByCpf(cpf);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(atendenteDto, response.getBody());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(atendenteDto.getClass(), response.getBody().getClass());
+        assertEquals(cpf, response.getBody().getCpf());
+        assertEquals(ativo, response.getBody().getAtivo());
+        assertEquals(id, response.getBody().getIdAtendente());
+        assertEquals(nome, response.getBody().getNome());
+    }
+
+    @Test
+    void whenFindByCpfThenReturnException()
+    {
+        Mockito.when(service.findByCpf(Mockito.anyString())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            resource.findByCpf(cpf);
         }
         catch (Exception ex)
         {
@@ -90,5 +123,4 @@ class AtendenteResourceTest
             assertEquals(ObjectNotFoundException.class, ex.getClass());
         }
     }
-
 }
