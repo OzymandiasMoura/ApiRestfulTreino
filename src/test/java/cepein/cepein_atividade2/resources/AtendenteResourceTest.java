@@ -217,10 +217,35 @@ class AtendenteResourceTest
     @Test
     void whenSoftDeleteThenReturnSuccess()
     {
+        Mockito.when(service.softDelete(Mockito.any(AtendenteDto.class))).thenReturn(atendente);
+
+        ResponseEntity<AtendenteDto> response = resource.softDelete(id, atendenteDto);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(atendenteDto.getClass(), response.getBody().getClass());
+        assertEquals(id, response.getBody().getIdAtendente());
+        assertEquals(nome, response.getBody().getNome());
+        assertEquals(cpf, response.getBody().getCpf());
+        assertEquals(ativo, response.getBody().getAtivo());
     }
 
     @Test
     void whenSoftDeleteThenReturnException()
     {
+        Mockito.when(service.softDelete(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+
+        try
+        {
+            ResponseEntity<AtendenteDto> response = resource.softDelete(id, atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(dataIntegrityMessage, ex.getMessage());
+            assertEquals(DataIntegrityException.class, ex.getClass());
+        }
     }
 }
