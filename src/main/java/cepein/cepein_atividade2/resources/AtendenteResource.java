@@ -36,10 +36,7 @@ public class AtendenteResource
     @GetMapping
     public ResponseEntity<List<AtendenteDto>> findAll()
     {
-        List<AtendenteDto> atendentes = new ArrayList<>();
-        service.findAll().stream().map(atendente -> atendentes.add(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo())));
-
-        return ResponseEntity.ok().body(atendentes);
+        return ResponseEntity.ok().body(service.findAll().stream().map(atendente -> new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo())).toList());
     }
 
     @PostMapping

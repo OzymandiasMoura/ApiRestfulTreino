@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -122,5 +122,23 @@ class AtendenteResourceTest
             assertEquals(notFoundMessage, ex.getMessage());
             assertEquals(ObjectNotFoundException.class, ex.getClass());
         }
+    }
+
+    @Test
+    void whenFindAllThenReturnSuccess()
+    {
+        Mockito.when(service.findAll()).thenReturn(List.of(atendente));
+
+        ResponseEntity<List<AtendenteDto>> response = resource.findAll();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(atendenteDto.getClass(), response.getBody().get(0).getClass());
+        assertEquals(id, response.getBody().get(0).getIdAtendente());
+        assertEquals(nome, response.getBody().get(0).getNome());
+        assertEquals(cpf, response.getBody().get(0).getCpf());
+        assertEquals(ativo, response.getBody().get(0).getAtivo());
     }
 }
