@@ -2,7 +2,6 @@ package cepein.cepein_atividade2.resources;
 
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
-import cepein.cepein_atividade2.repositories.AtendenteRepository;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import cepein.cepein_atividade2.services.impl.AtendenteServiceImpl;
@@ -156,7 +155,7 @@ class AtendenteResourceTest
     @Test
     void whenCreateThenException()
     {
-        Mockito.when(service.create(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(notFoundMessage));
+        Mockito.when(service.create(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
 
         try
         {
@@ -165,7 +164,7 @@ class AtendenteResourceTest
         catch (Exception ex)
         {
             assertNotNull(ex);
-            assertEquals(notFoundMessage, ex.getMessage());
+            assertEquals(dataIntegrityMessage, ex.getMessage());
             assertEquals(DataIntegrityException.class, ex.getClass());
         }
     }
@@ -173,11 +172,36 @@ class AtendenteResourceTest
     @Test
     void whenUpdateThenReturnSuccess()
     {
+        Mockito.when(service.update(Mockito.any(AtendenteDto.class))).thenReturn(atendente);
+
+        ResponseEntity<AtendenteDto> response = resource.update(id, atendenteDto);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(atendenteDto.getClass(), response.getBody().getClass());
+        assertEquals(id, response.getBody().getIdAtendente());
+        assertEquals(nome, response.getBody().getNome());
+        assertEquals(cpf, response.getBody().getCpf());
+        assertEquals(ativo, response.getBody().getAtivo());
     }
 
     @Test
     void whenUpdateThenReturnException()
     {
+        Mockito.when(service.update(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+
+        try
+        {
+            ResponseEntity<AtendenteDto> response = resource.update(id, atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(dataIntegrityMessage, ex.getMessage());
+            assertEquals(DataIntegrityException.class, ex.getClass());
+        }
     }
 
     @Test
