@@ -58,9 +58,7 @@ public class AtendenteResource
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<AtendenteDto> delete(@PathVariable Integer id)
     {
-        Atendente atendente = service.findById(id);
-        AtendenteDto atendenteDto = new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo());
-        service.delete(atendenteDto);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 

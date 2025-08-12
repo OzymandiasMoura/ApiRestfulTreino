@@ -63,10 +63,9 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
-    public void delete(AtendenteDto atendente)
+    public void delete(Integer id)
     {
-        findById(atendente.getIdAtendente());
-        repository.deleteById(atendente.getIdAtendente());
+        repository.deleteById(id);
     }
 
     @Override

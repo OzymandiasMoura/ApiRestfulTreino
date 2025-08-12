@@ -12,6 +12,6 @@ public interface AtendenteService
     Atendente update(AtendenteDto atendente);
     Atendente findByCpf(String cpf);
     void validationByCpf(AtendenteDto atendente);
-    void delete(AtendenteDto atendente);
+    void delete(Integer id);
     Atendente softDelete(AtendenteDto atendente);
 }

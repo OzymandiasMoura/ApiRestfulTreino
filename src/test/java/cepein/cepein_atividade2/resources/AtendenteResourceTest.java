@@ -207,11 +207,33 @@ class AtendenteResourceTest
     @Test
     void whenDeleteThenReturnSuccess()
     {
+        Mockito.doNothing().when(service).delete(Mockito.anyInt());
+
+        ResponseEntity<AtendenteDto> response = resource.delete(id);
+
+        assertNotNull(response);
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        Mockito.verify(service).delete(Mockito.anyInt());
     }
 
     @Test
     void whenDeleteThenReturnException()
     {
+        Mockito.doNothing().when(service).delete(Mockito.anyInt());
+        try
+        {
+            ResponseEntity<AtendenteDto> response = resource.delete(id);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(notFoundMessage, ex.getMessage());
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+        }
+
+
     }
 
     @Test

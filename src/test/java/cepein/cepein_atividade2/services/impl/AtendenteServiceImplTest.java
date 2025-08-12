@@ -207,19 +207,18 @@ class AtendenteServiceImplTest
     @Test
     void whenDeleteThenSuccess()
     {
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(atendenteOptional);
         Mockito.doNothing().when(repository).delete(Mockito.any());
-        service.delete(atendenteDto);
+        service.delete(id);
         Mockito.verify(repository, Mockito.times(1)).deleteById(id);
     }
 
     @Test
     void whenDeleteThenThrowObjectNotFoundException()
     {
-        Mockito.when(repository.findById(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+        Mockito.doNothing().when(repository).delete(Mockito.any());
         try
         {
-            service.delete(atendenteDto);
+            service.delete(id);
         } catch (Exception ex)
         {
             assertNotNull(ex);
