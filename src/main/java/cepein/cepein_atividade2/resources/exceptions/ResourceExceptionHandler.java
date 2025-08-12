@@ -1,6 +1,7 @@
 package cepein.cepein_atividade2.resources.exceptions;
 
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
+import cepein.cepein_atividade2.services.exceptions.InvalidFormatException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,11 @@ public class ResourceExceptionHandler
     {
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<StandardError> handlerInvalidFormatException(InvalidFormatException ex, HttpServletRequest request)
+    {
+        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
