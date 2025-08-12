@@ -3,6 +3,7 @@ package cepein.cepein_atividade2.resources;
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
+import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import cepein.cepein_atividade2.services.impl.AtendenteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +26,6 @@ class AtendenteResourceTest
 
     @Mock
     AtendenteServiceImpl service;
-
-    @Mock
-    AtendenteRepository repository;
 
     private AtendenteDto atendenteDto;
     private Atendente atendente;
@@ -115,8 +113,7 @@ class AtendenteResourceTest
         try
         {
             resource.findByCpf(cpf);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(notFoundMessage, ex.getMessage());
@@ -140,5 +137,66 @@ class AtendenteResourceTest
         assertEquals(nome, response.getBody().get(0).getNome());
         assertEquals(cpf, response.getBody().get(0).getCpf());
         assertEquals(ativo, response.getBody().get(0).getAtivo());
+    }
+
+    @Test
+    void whenCreateThenReturnSuccess()
+    {
+        Mockito.when(service.create(Mockito.any(AtendenteDto.class))).thenReturn(atendente);
+
+        ResponseEntity<AtendenteDto> response = resource.create(atendenteDto);
+
+        assertNotNull(response);
+        assertNotNull(response.getHeaders().get("Location"));
+        assertNull(response.getBody());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void whenCreateThenException()
+    {
+        Mockito.when(service.create(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(notFoundMessage));
+
+        try
+        {
+            ResponseEntity<AtendenteDto> response = resource.create(atendenteDto);
+        }
+        catch (Exception ex)
+        {
+            assertNotNull(ex);
+            assertEquals(notFoundMessage, ex.getMessage());
+            assertEquals(DataIntegrityException.class, ex.getClass());
+        }
+    }
+
+    @Test
+    void whenUpdateThenReturnSuccess()
+    {
+    }
+
+    @Test
+    void whenUpdateThenReturnException()
+    {
+    }
+
+    @Test
+    void whenDeleteThenReturnSuccess()
+    {
+    }
+
+    @Test
+    void whenDeleteThenReturnException()
+    {
+    }
+
+    @Test
+    void whenSoftDeleteThenReturnSuccess()
+    {
+    }
+
+    @Test
+    void whenSoftDeleteThenReturnException()
+    {
     }
 }
