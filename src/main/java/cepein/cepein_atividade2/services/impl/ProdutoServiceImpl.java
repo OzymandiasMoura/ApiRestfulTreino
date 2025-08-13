@@ -20,8 +20,6 @@ public class ProdutoServiceImpl implements ProdutoService
     private final String dataIntegrityExceptionMessage = "Produto já cadastrado";
     private final String invalidFormatException = "Código de barras é invalido.";
 
-
-
     @Autowired
     private ProdutoRepository repository;
 
