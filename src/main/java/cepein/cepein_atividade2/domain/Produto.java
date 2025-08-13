@@ -22,6 +22,7 @@ public class Produto
 
     @NonNull
     @NotBlank
+    @Column(unique = true)
     private String barCode;
 
     @NonNull
