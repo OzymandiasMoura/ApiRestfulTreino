@@ -5,6 +5,7 @@ import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import cepein.cepein_atividade2.services.ProdutoService;
+import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.InvalidFormatException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class ProdutoServiceImpl implements ProdutoService
 {
     private final String notFoundException = "Produto não encontrado";
+    private final String dataIntegrityExceptionMessage = "Produto já cadastrado";
     private final String invalidFormatException = "Código de barras é invalido.";
 
 
@@ -63,7 +65,7 @@ public class ProdutoServiceImpl implements ProdutoService
         Optional<Produto> produto = repository.findByBarCode(atendente.getBarCode());
         if(produto.isPresent() && !produto.get().getIdProduto().equals(atendente.getIdProduto()))
         {
-            throw  new ObjectNotFoundException(notFoundException);
+            throw  new DataIntegrityException(dataIntegrityExceptionMessage);
         }
         else if (produto.get().getBarCode().length() != 13 && produto.get().getBarCode().length() != 8)
         {
