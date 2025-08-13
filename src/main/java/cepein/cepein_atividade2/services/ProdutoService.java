@@ -11,7 +11,7 @@ public interface ProdutoService
     List<Produto> findAll();
     Produto update(ProdutoDto atendente);
     Produto findByBarCode(String barCode);
-    void validationByBarCode(String barCode);
+    void validationByBarCode (ProdutoDto atendente);
     void delete(Integer id);
     Produto softDelete(ProdutoDto atendente);
 }
