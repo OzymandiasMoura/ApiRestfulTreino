@@ -182,11 +182,34 @@ class ProdutoServiceImplTest
     @Test
     void whenFindByBarCodeThenSuccess()
     {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenReturn(produtoOptional);
+
+        Produto response = service.findByBarCode(barCode);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.getClass());
+        assertEquals(id, response.getIdProduto());
+        assertEquals(nome, response.getNome());
+        assertEquals(barCode, response.getBarCode());
+        assertEquals(preco, response.getPreco());
+        assertEquals(ativo, response.getAtivo());
     }
 
     @Test
     void whenFindByBarCodeThenException()
     {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            service.findByBarCode(barCode);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
     }
 
     @Test
