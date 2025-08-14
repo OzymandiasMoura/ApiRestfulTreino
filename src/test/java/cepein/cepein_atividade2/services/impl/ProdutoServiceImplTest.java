@@ -180,12 +180,12 @@ class ProdutoServiceImplTest
     }
 
     @Test
-    void whenFindByCpfThenSuccess()
+    void whenFindByBarCodeThenSuccess()
     {
     }
 
     @Test
-    void whenFindByCpfThenException()
+    void whenFindByBarCodeThenException()
     {
     }
 
