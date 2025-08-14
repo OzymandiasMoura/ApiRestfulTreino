@@ -3,7 +3,6 @@ package cepein.cepein_atividade2.services.impl;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
-import cepein.cepein_atividade2.services.ProdutoService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.InvalidFormatException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
@@ -15,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -129,13 +129,22 @@ class ProdutoServiceImplTest
             assertNotNull(e);
             assertEquals(invalidFormatMessage, e.getMessage());
             assertEquals(InvalidFormatException.class, e.getClass());
-
         }
     }
 
     @Test
     void whenFindAllThenSuccess()
     {
+        Mockito.when(repository.findAll()).thenReturn(List.of(produto));
+        List<Produto> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdProduto());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(barCode, response.get(0).getBarCode());
+        assertEquals(preco, response.get(0).getPreco());
+        assertEquals(ativo, response.get(0).getAtivo());
     }
 
     @Test
@@ -159,7 +168,12 @@ class ProdutoServiceImplTest
     }
 
     @Test
-    void whenValidationByCpfThenExeption()
+    void whenValidationByCpfThenException()
+    {
+    }
+
+    @Test
+    void whenValidateBarCodeFormatException()
     {
     }
 

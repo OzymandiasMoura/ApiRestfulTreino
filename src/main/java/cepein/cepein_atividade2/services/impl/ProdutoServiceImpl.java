@@ -32,7 +32,6 @@ public class ProdutoServiceImpl implements ProdutoService
     @Override
     public Produto create(ProdutoDto dto)
     {
-        //TODO: Corrigir meyodo do validateBarCodeFormat
         validationByBarCode(dto);
         validateBarCodeFormat(dto);
         Produto produto = ProdutoMapper.dtoToEntity(dto);
@@ -49,7 +48,7 @@ public class ProdutoServiceImpl implements ProdutoService
     public Produto update(ProdutoDto atendente)
     {
         validationByBarCode(atendente);
-        var produto = ProdutoMapper.dtoToEntity(atendente);
+        Produto produto = ProdutoMapper.dtoToEntity(atendente);
         return repository.save(ProdutoMapper.dtoToEntity(atendente));
     }
 
