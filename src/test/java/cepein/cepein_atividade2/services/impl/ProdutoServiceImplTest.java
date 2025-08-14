@@ -225,20 +225,59 @@ class ProdutoServiceImplTest
     @Test
     void whenDeleteThenSuccess()
     {
+        Mockito.doNothing().when(repository).delete(Mockito.any());
+        service.delete(id);
+        Mockito.verify(repository, Mockito.times(1)).deleteById(id);
     }
 
     @Test
     void whenDeleteThenException()
     {
+        Mockito.doNothing().when(repository).delete(Mockito.any());
+
+        try
+        {
+            service.delete(id);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(DataIntegrityException.class, e.getClass());
+            assertEquals(dataIntegrityMessage, e.getMessage());
+
+        }
     }
 
     @Test
     void whenSoftDeleteThenSuccess()
     {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(produto);
+
+        Produto response = service.softDelete(produtoDto);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.getClass());
+        assertEquals(id, response.getIdProduto());
+        assertEquals(nome, response.getNome());
+        assertEquals(barCode, response.getBarCode());
+        assertEquals(preco, response.getPreco());
+        assertEquals(false, response.getAtivo());
     }
 
     @Test
     void whenSoftDeleteThenException()
     {
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            service.softDelete(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
     }
 }

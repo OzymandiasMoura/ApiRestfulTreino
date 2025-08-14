@@ -13,7 +13,7 @@ public class ProdutoMapper
 
     public static Produto dtoToEntity(ProdutoDto dto)
     {
-        Produto p = new Produto(dto.getNome(), dto.getBarCode(), dto.getPreco(), dto.getAtivo());
+        Produto p = new Produto(dto.getIdProduto(), dto.getNome(), dto.getBarCode(), dto.getPreco(), dto.getAtivo());
         return p;
     }
 }
