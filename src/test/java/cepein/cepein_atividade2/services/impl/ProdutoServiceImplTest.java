@@ -213,13 +213,37 @@ class ProdutoServiceImplTest
     }
 
     @Test
-    void whenValidationByCpfThenException()
+    void whenValidationByBarCodeThenException()
     {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+
+        try
+        {
+            service.validationByBarCode(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(dataIntegrityMessage, e.getMessage());
+            assertEquals(DataIntegrityException.class, e.getClass());
+        }
     }
 
     @Test
     void whenValidateBarCodeFormatException()
     {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenThrow(new InvalidFormatException(invalidFormatMessage));
+
+        try
+        {
+            service.validationByBarCode(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(invalidFormatMessage, e.getMessage());
+            assertEquals(InvalidFormatException.class, e.getClass());
+        }
     }
 
     @Test
@@ -244,7 +268,6 @@ class ProdutoServiceImplTest
             assertNotNull(e);
             assertEquals(DataIntegrityException.class, e.getClass());
             assertEquals(dataIntegrityMessage, e.getMessage());
-
         }
     }
 
