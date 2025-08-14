@@ -150,11 +150,33 @@ class ProdutoServiceImplTest
     @Test
     void whenUpdateThenSuccess()
     {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(produto);
+
+        Produto response = service.update(produtoDto);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.getClass());
+        assertEquals(id, response.getIdProduto());
+        assertEquals(nome, response.getNome());
+        assertEquals(barCode, response.getBarCode());
+        assertEquals(preco, response.getPreco());
+        assertEquals(ativo, response.getAtivo());
     }
 
     @Test
     void whenUpdateThenException()
     {
+        Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+        try
+        {
+            service.update(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(dataIntegrityMessage, e.getMessage());
+            assertEquals(DataIntegrityException.class, e.getClass());
+        }
     }
 
     @Test
