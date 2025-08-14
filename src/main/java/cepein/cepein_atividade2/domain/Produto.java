@@ -15,22 +15,20 @@ public class Produto
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduto;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     @NonNull
-    @NotBlank
     private String nome;
 
     @NonNull
-    @NotBlank
-    @Column(unique = true)
+    @Column(unique = true,  nullable = false)
     private String barCode;
 
     @NonNull
-    @NotBlank
+    @Column(nullable = false)
     private Double preco;
 
     @NonNull
-    @NotBlank
+    @Column(nullable = false)
     private Boolean ativo;
 
     public Produto(String nome, String barCode, Double preco)

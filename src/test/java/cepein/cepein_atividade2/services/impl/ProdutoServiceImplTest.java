@@ -1,17 +1,16 @@
 package cepein.cepein_atividade2.services.impl;
 
-import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Produto;
-import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import cepein.cepein_atividade2.services.ProdutoService;
+import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ class ProdutoServiceImplTest
     public static final String invalidFormatMessage = "Formato do código de barras é invalido.";
 
     @InjectMocks
-    ProdutoService service;
+    ProdutoServiceImpl service;
 
     @Mock
     ProdutoRepository repository;
@@ -51,11 +50,34 @@ class ProdutoServiceImplTest
     @Test
     void whenFindByIdThenSuccess()
     {
+        Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(produtoOptional);
+
+        Produto response = service.findById(id);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.getClass());
+        assertEquals(id, response.getIdProduto());
+        assertEquals(nome, response.getNome());
+        assertEquals(barCode, response.getBarCode());
+        assertEquals(preco, response.getPreco());
+        assertEquals(ativo, response.getAtivo());
     }
 
     @Test
     void whenFindByIdThenException()
     {
+        Mockito.when(repository.findById(Mockito.anyInt())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            service.findById(id);
+        }
+        catch (Exception e)
+        {
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertNotNull(e);
+        }
     }
 
     @Test

@@ -34,12 +34,12 @@ public class LocalConfig
     @Bean
     public List<Produto> startProdutosDb()
     {
-        Produto p1 = new Produto("Geladeira", "1111111111111", 1260.50);
-        Produto p2 = new Produto("Televisão", "1111111111112", 1790.75);
-        Produto p3 = new Produto("Forno", "1111111111113", 500.00);
-        Produto p4 = new Produto("Ventilador", "1111111111114", 120.50);
-        Produto p5 = new Produto("ArCondicionado", "1111111111115", 3250.00);
-        Produto p6 = new Produto("Notebook", "1111111111116", 1560.00);
+        Produto p1 = new Produto("Geladeira", "1111111111111", 1260.50, true);
+        Produto p2 = new Produto("Televisão", "1111111111112", 1790.75,  true);
+        Produto p3 = new Produto("Forno", "1111111111113", 500.00,  true);
+        Produto p4 = new Produto("Ventilador", "1111111111114", 120.50, true);
+        Produto p5 = new Produto("ArCondicionado", "1111111111115", 3250.00, true);
+        Produto p6 = new Produto("Notebook", "1111111111116", 1560.00, false);
 
         return produtoRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
     }
