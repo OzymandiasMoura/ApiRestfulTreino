@@ -237,6 +237,7 @@ class ProdutoServiceImplTest
         try
         {
             service.validationByBarCode(produtoDto);
+
         }
         catch (Exception e)
         {
