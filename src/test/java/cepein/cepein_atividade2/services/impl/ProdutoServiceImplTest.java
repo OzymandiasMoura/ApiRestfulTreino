@@ -4,6 +4,8 @@ import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import cepein.cepein_atividade2.services.ProdutoService;
+import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
+import cepein.cepein_atividade2.services.exceptions.InvalidFormatException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,11 +85,52 @@ class ProdutoServiceImplTest
     @Test
     void whenCreateThenSuccess()
     {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(produtoOptional);
+
+        Produto response = service.create(produtoDto);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.getClass());
+        assertEquals(id, response.getIdProduto());
+        assertEquals(nome, response.getNome());
+        assertEquals(barCode, response.getBarCode());
+        assertEquals(preco, response.getPreco());
+        assertEquals(ativo, response.getAtivo());
     }
 
     @Test
     void whenCreateThenException()
     {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+
+        try
+        {
+            service.create(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(dataIntegrityMessage, e.getMessage());
+            assertEquals(DataIntegrityException.class, e.getClass());
+        }
+    }
+
+    @Test
+    void whenCreateThenExceptionInvalidFormat()
+    {
+        Mockito.when(repository.findByBarCode(Mockito.any())).thenThrow(new InvalidFormatException(invalidFormatMessage));
+
+        try
+        {
+            service.create(produtoDto);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(invalidFormatMessage, e.getMessage());
+            assertEquals(InvalidFormatException.class, e.getClass());
+
+        }
     }
 
     @Test

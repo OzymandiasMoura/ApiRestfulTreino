@@ -18,7 +18,7 @@ public class ProdutoServiceImpl implements ProdutoService
 {
     private final String notFoundException = "Produto não encontrado";
     private final String dataIntegrityExceptionMessage = "Produto já cadastrado";
-    private final String invalidFormatException = "Código de barras é invalido.";
+    private final String invalidFormatExceptionMessage = "Código de barras é invalido.";
 
     @Autowired
     private ProdutoRepository repository;
@@ -32,7 +32,9 @@ public class ProdutoServiceImpl implements ProdutoService
     @Override
     public Produto create(ProdutoDto dto)
     {
+        //TODO: Corrigir meyodo do validateBarCodeFormat
         validationByBarCode(dto);
+        validateBarCodeFormat(dto);
         Produto produto = ProdutoMapper.dtoToEntity(dto);
         return repository.save(produto);
     }
@@ -47,6 +49,7 @@ public class ProdutoServiceImpl implements ProdutoService
     public Produto update(ProdutoDto atendente)
     {
         validationByBarCode(atendente);
+        var produto = ProdutoMapper.dtoToEntity(atendente);
         return repository.save(ProdutoMapper.dtoToEntity(atendente));
     }
 
@@ -65,11 +68,15 @@ public class ProdutoServiceImpl implements ProdutoService
         {
             throw  new DataIntegrityException(dataIntegrityExceptionMessage);
         }
-        else if (produto.get().getBarCode().length() != 13 && produto.get().getBarCode().length() != 8)
-        {
-            throw  new InvalidFormatException(invalidFormatException);
-        }
+    }
 
+    public void validateBarCodeFormat(ProdutoDto produtoDto)
+    {
+        Optional<Produto> produto = repository.findByBarCode(produtoDto.getBarCode());
+        if (produto.get().getBarCode().length() != 13 && produto.get().getBarCode().length() != 8)
+        {
+            throw  new InvalidFormatException(invalidFormatExceptionMessage);
+        }
     }
 
     @Override
