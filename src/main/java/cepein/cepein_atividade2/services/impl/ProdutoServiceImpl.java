@@ -33,7 +33,6 @@ public class ProdutoServiceImpl implements ProdutoService
     public Produto create(ProdutoDto dto)
     {
         validationByBarCode(dto);
-        validateBarCodeFormat(dto);
         Produto produto = ProdutoMapper.dtoToEntity(dto);
         return repository.save(produto);
     }
@@ -45,11 +44,10 @@ public class ProdutoServiceImpl implements ProdutoService
     }
 
     @Override
-    public Produto update(ProdutoDto atendente)
+    public Produto update(ProdutoDto dto)
     {
-        validationByBarCode(atendente);
-        Produto produto = ProdutoMapper.dtoToEntity(atendente);
-        return repository.save(ProdutoMapper.dtoToEntity(atendente));
+        validationByBarCode(dto);
+        return repository.save(ProdutoMapper.dtoToEntity(dto));
     }
 
     @Override
@@ -60,10 +58,10 @@ public class ProdutoServiceImpl implements ProdutoService
     }
 
     @Override
-    public void validationByBarCode(ProdutoDto atendente)
+    public void validationByBarCode(ProdutoDto dto)
     {
-        Optional<Produto> produto = repository.findByBarCode(atendente.getBarCode());
-        if(produto.isPresent() && !produto.get().getIdProduto().equals(atendente.getIdProduto()))
+        Optional<Produto> produto = repository.findByBarCode(dto.getBarCode());
+        if(produto.isPresent() && !produto.get().getIdProduto().equals(dto.getIdProduto()))
         {
             throw  new DataIntegrityException(dataIntegrityExceptionMessage);
         }
@@ -71,8 +69,10 @@ public class ProdutoServiceImpl implements ProdutoService
 
     public void validateBarCodeFormat(ProdutoDto produtoDto)
     {
+        //Metodo quebrado!!!!!
         Optional<Produto> produto = repository.findByBarCode(produtoDto.getBarCode());
-        if (produto.get().getBarCode().length() != 13 && produto.get().getBarCode().length() != 8)
+        Integer tamanho = produto.get().getBarCode().length();
+        if (!( tamanho == 13) && !(tamanho == 8))
         {
             throw  new InvalidFormatException(invalidFormatExceptionMessage);
         }

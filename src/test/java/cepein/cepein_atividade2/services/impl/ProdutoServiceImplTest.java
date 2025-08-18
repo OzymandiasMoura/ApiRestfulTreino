@@ -26,7 +26,7 @@ class ProdutoServiceImplTest
 
     private final static Integer id = 1;
     private final static String nome = "Geladeira";
-    private final static String barCode = "1111111111111";
+    private final static String barCode = "2222222222222";
     private final static Double preco = 1550.50;
     private final static Boolean ativo = true;
 
@@ -85,7 +85,7 @@ class ProdutoServiceImplTest
     @Test
     void whenCreateThenSuccess()
     {
-        Mockito.when(repository.save(Mockito.any())).thenReturn(produtoOptional);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(produto);
 
         Produto response = service.create(produtoDto);
 
