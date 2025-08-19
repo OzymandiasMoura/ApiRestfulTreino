@@ -3,11 +3,8 @@ package cepein.cepein_atividade2.domain.dto;
 import cepein.cepein_atividade2.domain.Atendente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +12,7 @@ import java.util.Date;
 public class PedidoDto
 {
     private Integer idPedido;
-    private Date dataAberturaPedido;
+    private LocalDate dataAberturaPedido;
     private Atendente atendente;
     private Boolean aberta;
     private LocalDate dataFechamentoPedido;

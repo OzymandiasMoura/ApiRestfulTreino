@@ -1,14 +1,15 @@
 package cepein.cepein_atividade2.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.cglib.core.Local;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,20 +24,19 @@ public class Pedido
 
     @NonNull
     @Column(nullable = false)
-    private Date dataAberturaPedido;
+    private LocalDate dataAberturaPedido;
 
     @NonNull
     @ManyToOne
     @Column(nullable = false)
     private Atendente atendente;
 
-    @NotNull
     @Column(nullable = false)
     private Boolean aberta;
 
     private LocalDate dataFechamentoPedido;
 
-    public Pedido(Date dataPedido, Atendente atendente)
+    public Pedido(LocalDate dataPedido, Atendente atendente)
     {
         this.dataAberturaPedido = dataPedido;
         this.atendente = atendente;

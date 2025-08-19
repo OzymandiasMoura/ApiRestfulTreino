@@ -1,13 +1,17 @@
 package cepein.cepein_atividade2.config;
 
 import cepein.cepein_atividade2.domain.Atendente;
+import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
+import cepein.cepein_atividade2.repositories.PedidoRepository;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
@@ -19,6 +23,9 @@ public class LocalConfig
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
     @Bean
     public List<Atendente> startAtendenteDb()
@@ -42,5 +49,17 @@ public class LocalConfig
         Produto p6 = new Produto("Notebook", "1111111111116", 1560.00, false);
 
         return produtoRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+    }
+
+    @Bean
+    public List<Pedido> startPedidosDb(PedidoRepository pedidoRepository)
+    {
+        Pedido p1 = new Pedido(LocalDate.of(2025, 1, 1), startAtendenteDb().get(0));
+        Pedido p2 = new Pedido(LocalDate.of(2025, 1, 12), startAtendenteDb().get(1));
+        Pedido p3 = new Pedido(LocalDate.of(2025, 1, 10), startAtendenteDb().get(2));
+        Pedido p4 = new Pedido(LocalDate.of(2025, 1, 5), startAtendenteDb().get(3));
+        Pedido p5 = new Pedido(LocalDate.of(2025, 1, 6), startAtendenteDb().get(1));
+
+        return pedidoRepository.saveAll(List.of(p1, p2, p3, p4, p5));
     }
 }
