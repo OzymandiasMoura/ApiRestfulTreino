@@ -9,7 +9,6 @@ import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -49,15 +48,25 @@ public class PedidoServiceImpl implements PedidoService
     @Override
     public void delete(Integer id)
     {
-        repository.deleteById(id);
+        try
+        {
+            repository.deleteById(id);
+        }
+        catch (Exception e)
+        {
+            throw new ObjectNotFoundException("Objeto não encontrado.");
+        }
     }
 
     @Override
     public Pedido closeOrder(PedidoDto dto)
     {
+        validationOrder(dto);
         Pedido obj = PedidoMapper.dtoToEntity(dto);
         obj.fecharPedido();
-        return repository.save(obj);
+
+        repository.save(obj);
+        return obj;
     }
 
     void validationOrder(PedidoDto dto)

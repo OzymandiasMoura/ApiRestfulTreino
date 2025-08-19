@@ -6,7 +6,6 @@ import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import cepein.cepein_atividade2.services.ProdutoService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
-import cepein.cepein_atividade2.services.exceptions.InvalidFormatException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class ProdutoServiceImpl implements ProdutoService
 {
     private final String notFoundException = "Produto não encontrado";
     private final String dataIntegrityExceptionMessage = "Produto já cadastrado";
-    private final String invalidFormatExceptionMessage = "Código de barras é invalido.";
+    //private final String invalidFormatExceptionMessage = "Código de barras é invalido.";
 
     @Autowired
     private ProdutoRepository repository;
@@ -67,16 +66,16 @@ public class ProdutoServiceImpl implements ProdutoService
         }
     }
 
-    public void validateBarCodeFormat(ProdutoDto produtoDto)
-    {
-        //Metodo quebrado!!!!!
-        Optional<Produto> produto = repository.findByBarCode(produtoDto.getBarCode());
-        Integer tamanho = produto.get().getBarCode().length();
-        if (!( tamanho == 13) && !(tamanho == 8))
-        {
-            throw  new InvalidFormatException(invalidFormatExceptionMessage);
-        }
-    }
+//    public void validateBarCodeFormat(ProdutoDto produtoDto)
+//    {
+//        //Quebrado!!!!!
+//        Optional<Produto> produto = repository.findByBarCode(produtoDto.getBarCode());
+//        Integer tamanho = produto.get().getBarCode().length();
+//        if (!( tamanho == 13) && !(tamanho == 8))
+//        {
+//            throw  new InvalidFormatException(invalidFormatExceptionMessage);
+//        }
+//    }
 
     @Override
     public void delete(Integer id)

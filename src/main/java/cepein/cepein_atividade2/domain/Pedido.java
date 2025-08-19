@@ -28,7 +28,6 @@ public class Pedido
 
     @NonNull
     @ManyToOne
-    @Column(nullable = false)
     private Atendente atendente;
 
     @Column(nullable = false)
@@ -47,6 +46,6 @@ public class Pedido
     public void fecharPedido()
     {
         setAberta(false);
-        this.dataFechamentoPedido = LocalDate.now();
+        setDataFechamentoPedido(LocalDate.now());
     }
 }

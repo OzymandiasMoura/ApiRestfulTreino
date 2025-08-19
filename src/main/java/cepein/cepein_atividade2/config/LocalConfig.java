@@ -52,7 +52,7 @@ public class LocalConfig
     }
 
     @Bean
-    public List<Pedido> startPedidosDb(PedidoRepository pedidoRepository)
+    public List<Pedido> startPedidosDb()
     {
         Pedido p1 = new Pedido(LocalDate.of(2025, 1, 1), startAtendenteDb().get(0));
         Pedido p2 = new Pedido(LocalDate.of(2025, 1, 12), startAtendenteDb().get(1));
