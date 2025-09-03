@@ -38,14 +38,17 @@ public class PedidoResource
     @PostMapping
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoDto pedidoDto)
     {
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(service.create(pedidoDto).getIdPedido()).toUri();
+
+        Pedido pedido = mapper.dtoToEntity(pedidoDto);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getIdPedido()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<PedidoDto> update(@PathVariable Integer id, @RequestBody PedidoDto pedidoDto)
     {
-        Pedido pedido = service.findById(id);
+        Pedido pedido = service.update(pedidoDto);
         return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
     }
 
@@ -59,7 +62,11 @@ public class PedidoResource
     @PutMapping(value = "/closeOrder/{id}")
     public ResponseEntity<PedidoDto> closeOrder(@PathVariable Integer id, @RequestBody PedidoDto pedidoDto)
     {
-        Pedido pedido = service.closeOrder(pedidoDto);
-        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
+        Pedido pedido = PedidoMapper.dtoToEntity(pedidoDto);
+        pedido.fecharPedido();
+
+        PedidoDto dto = PedidoMapper.entityToDto(pedido);
+
+        return ResponseEntity.ok().body(dto);
     }
 }
