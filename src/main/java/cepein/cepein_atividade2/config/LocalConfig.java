@@ -3,9 +3,11 @@ package cepein.cepein_atividade2.config;
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
+import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
 import cepein.cepein_atividade2.repositories.PedidoRepository;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
+import cepein.cepein_atividade2.repositories.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,9 @@ public class LocalConfig
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private VendaRepository vendaRepository;
 
     @Bean
     public List<Atendente> startAtendenteDb()
@@ -61,5 +66,24 @@ public class LocalConfig
         Pedido p5 = new Pedido(LocalDate.of(2025, 1, 6), startAtendenteDb().get(1));
 
         return pedidoRepository.saveAll(List.of(p1, p2, p3, p4, p5));
+    }
+
+    @Bean
+    public List<Venda> startVendasDb()
+    {
+        Venda v1 = new Venda(startPedidosDb().get(0), startProdutosDb().get(0), 3, 0.15);
+        Venda v2 = new Venda(startPedidosDb().get(0), startProdutosDb().get(1), 1, 0.15);
+        Venda v3 = new Venda(startPedidosDb().get(0), startProdutosDb().get(2), 5, 0.15);
+        Venda v4 = new Venda(startPedidosDb().get(1), startProdutosDb().get(5), 1, 0.20);
+        Venda v5 = new Venda(startPedidosDb().get(1), startProdutosDb().get(3), 2, 0.10);
+        Venda v6 = new Venda(startPedidosDb().get(1), startProdutosDb().get(2), 1, 0.3);
+        Venda v7 = new Venda(startPedidosDb().get(2), startProdutosDb().get(5), 1, 0.2);
+        Venda v8 = new Venda(startPedidosDb().get(2), startProdutosDb().get(2), 1, 0.2);
+        Venda v9 = new Venda(startPedidosDb().get(3), startProdutosDb().get(4), 1, 0.15);
+        Venda v10 = new Venda(startPedidosDb().get(4), startProdutosDb().get(2), 2, 0.15);
+        Venda v11 = new Venda(startPedidosDb().get(4), startProdutosDb().get(5), 1, 0.2);
+        Venda v12 = new Venda(startPedidosDb().get(4), startProdutosDb().get(3), 1, 0.25);
+
+        return vendaRepository.saveAll(List.of(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10,v11, v12));
     }
 }

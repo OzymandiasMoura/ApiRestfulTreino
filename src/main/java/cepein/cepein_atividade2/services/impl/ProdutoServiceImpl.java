@@ -16,7 +16,6 @@ import java.util.Optional;
 public class ProdutoServiceImpl implements ProdutoService
 {
     private final String notFoundException = "Produto não encontrado";
-    private final String dataIntegrityExceptionMessage = "Produto já cadastrado";
     //private final String invalidFormatExceptionMessage = "Código de barras é invalido.";
 
     @Autowired
@@ -59,6 +58,7 @@ public class ProdutoServiceImpl implements ProdutoService
     @Override
     public void validationByBarCode(ProdutoDto dto)
     {
+        final String dataIntegrityExceptionMessage = "Produto já cadastrado";
         Optional<Produto> produto = repository.findByBarCode(dto.getBarCode());
         if(produto.isPresent() && !produto.get().getIdProduto().equals(dto.getIdProduto()))
         {
