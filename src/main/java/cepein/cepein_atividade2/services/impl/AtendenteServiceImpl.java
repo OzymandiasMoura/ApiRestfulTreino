@@ -18,11 +18,13 @@ public class AtendenteServiceImpl implements AtendenteService
     @Autowired
     private AtendenteRepository repository;
 
+    private final String objectNotFoundMessage =  "Atendente não encontrado!";
+
     @Override
     public Atendente findById(Integer id)
     {
         Optional<Atendente> atendente = repository.findById(id);
-        return atendente.orElseThrow(() -> new ObjectNotFoundException("Atendente não encontrado!"));
+        return atendente.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 
     @Override
@@ -49,16 +51,17 @@ public class AtendenteServiceImpl implements AtendenteService
     public Atendente findByCpf(String cpf)
     {
         Optional<Atendente> atendente1 = repository.findByCpf(cpf);
-        return atendente1.orElseThrow(() -> new ObjectNotFoundException("Atendente não encontrado!"));
+        return atendente1.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 
     @Override
     public void validationByCpf(AtendenteDto atendente)
     {
+        final String dataIntegrityMessage = "Cpf já cadastrado no sistema!";
         Optional<Atendente> optional = repository.findByCpf(atendente.getCpf());
         if(optional.isPresent() && optional.get().getIdAtendente().equals(atendente.getIdAtendente()))
         {
-            throw new DataIntegrityException("Cpf já cadastrado no sistema!");
+            throw new DataIntegrityException(dataIntegrityMessage);
         }
     }
 

@@ -15,6 +15,7 @@ import java.util.Optional;
 @Service
 public class PedidoServiceImpl implements PedidoService
 {
+    final String objectNotFoundMessage = "Pedido não encontrado!";
     @Autowired
     PedidoRepository repository;
 
@@ -22,7 +23,7 @@ public class PedidoServiceImpl implements PedidoService
     public Pedido findById(Integer id)
     {
         Optional<Pedido> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Pedido não encontrado!"));
+        return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class PedidoServiceImpl implements PedidoService
         }
         catch (Exception e)
         {
-            throw new ObjectNotFoundException("Objeto não encontrado.");
+            throw new ObjectNotFoundException(objectNotFoundMessage);
         }
     }
 
@@ -71,10 +72,11 @@ public class PedidoServiceImpl implements PedidoService
 
     void validationOrder(PedidoDto dto)
     {
+        final String dataIntegrityMessage = "Pedido já criado";
         Optional<Pedido> obj =  repository.findById(dto.getIdPedido());
         if(obj.isPresent() && !(obj.get().getIdPedido().equals(dto.getIdPedido())))
         {
-            throw new DataIntegrityException("Pedido já criado");
+            throw new DataIntegrityException(dataIntegrityMessage);
         }
     }
 }
