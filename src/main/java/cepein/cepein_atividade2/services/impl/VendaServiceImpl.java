@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 public class VendaServiceImpl implements VendaService
 {
-    private final String notFoundException = "Venda não encontrada";
+    private final String notFoundException = "Venda não encontrada!";
 
 
     @Autowired
@@ -76,7 +76,7 @@ public class VendaServiceImpl implements VendaService
 
     public void vendaValidation(Produto produto, Pedido pedido, VendaDto venda)
     {
-        final String dataIntegrityExceptionMessage = "Venda já cadastrada";
+        final String dataIntegrityExceptionMessage = "Venda já cadastrada!";
         Optional<List<Venda>> vendas = Optional.of(repository.findByProduto(produto));
         for (Venda v : vendas.get())
         {
