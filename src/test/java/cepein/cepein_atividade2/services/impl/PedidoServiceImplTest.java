@@ -26,7 +26,7 @@ class PedidoServiceImplTest
     @Mock
     PedidoRepository repository;
 
-    private static final String notFoundMessage = "Objeto não encontrado.";
+    private static final String notFoundMessage = "Pedido não encontrado!";
     private static final String dataIntegrityMessage = "Pedido ja cadastrado";
 
     private Optional<Pedido> optional;
