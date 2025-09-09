@@ -3,8 +3,12 @@ package cepein.cepein_atividade2.services.impl;
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.Venda;
+import cepein.cepein_atividade2.domain.dto.PedidoDto;
+import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.dto.VendaDto;
 import cepein.cepein_atividade2.domain.ids.VendaId;
+import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
+import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.domain.mapper.VendaMapper;
 import cepein.cepein_atividade2.repositories.VendaRepository;
 import cepein.cepein_atividade2.services.VendaService;
@@ -59,15 +63,15 @@ public class VendaServiceImpl implements VendaService
     }
 
     @Override
-    public List<Venda> findByProduct(Produto produto)
+    public List<Venda> findByProduct(ProdutoDto produto)
     {
-        return repository.findByProduto(produto);
+        return repository.findByProduto(ProdutoMapper.dtoToEntity(produto));
     }
 
     @Override
-    public List<Venda> findByPedido(Pedido pedido)
+    public List<Venda> findByPedido(PedidoDto pedido)
     {
-        return repository.findByPedido(pedido);
+        return repository.findByPedido(PedidoMapper.dtoToEntity(pedido));
     }
 
     public void vendaValidation(Produto produto, Pedido pedido, VendaDto venda)

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -78,12 +77,9 @@ public class LocalConfig
         Venda v5 = new Venda(startPedidosDb().get(1), startProdutosDb().get(3), 2, 0.10);
         Venda v6 = new Venda(startPedidosDb().get(1), startProdutosDb().get(2), 1, 0.3);
         Venda v7 = new Venda(startPedidosDb().get(2), startProdutosDb().get(5), 1, 0.2);
-        Venda v8 = new Venda(startPedidosDb().get(2), startProdutosDb().get(2), 1, 0.2);
-        Venda v9 = new Venda(startPedidosDb().get(3), startProdutosDb().get(4), 1, 0.15);
-        Venda v10 = new Venda(startPedidosDb().get(4), startProdutosDb().get(2), 2, 0.15);
-        Venda v11 = new Venda(startPedidosDb().get(4), startProdutosDb().get(5), 1, 0.2);
-        Venda v12 = new Venda(startPedidosDb().get(4), startProdutosDb().get(3), 1, 0.25);
 
-        return vendaRepository.saveAll(List.of(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10,v11, v12));
+        return vendaRepository.saveAll(List.of(v1, v2, v3, v4, v5, v6, v7));
     }
 }
+
+
