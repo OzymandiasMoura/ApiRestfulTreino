@@ -6,6 +6,8 @@ import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.domain.dto.VendaDto;
 import cepein.cepein_atividade2.domain.ids.VendaId;
+import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
+import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.repositories.VendaRepository;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
@@ -145,31 +147,112 @@ class VendaServiceImplTest
     @Test
     void whenUpdateThenSuccess()
     {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(venda);
+
+        Venda response = service.update(dto);
+
+        assertNotNull(response);
+        assertEquals(Venda.class, response.getClass());
+        assertEquals(vendaId, response.getIdVenda());
+        assertEquals(pedido, response.getPedido());
+        assertEquals(produto, response.getProduto());
+        assertEquals(desconto, response.getDesconto());
+        assertEquals(qtde, response.getQuantidade());
     }
 
     @Test
     void whenUpdateThenException()
     {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(venda);
+
+        try
+        {
+            service.update(dto);
+        }
+        catch (Exception e)
+        {
+            assertEquals(DataIntegrityException.class, e.getClass());
+            assertEquals(dataIntegrityMessage, e.getMessage());
+            assertNotNull(e);
+        }
     }
 
     @Test
     void whenDeleteThenSuccess()
     {
-    }
-
-    @Test
-    void whenDeleteThenException()
-    {
+        Mockito.doNothing().when(repository).delete(Mockito.any());
+        service.delete(vendaId);
+        Mockito.verify(repository, Mockito.times(1)).deleteById(vendaId);
     }
 
     @Test
     void whenFindByProductThenSuccess()
     {
+        Mockito.when(repository.findByProduto(Mockito.any())).thenReturn(List.of(venda));
+
+        List<Venda> response = service.findByProduct(ProdutoMapper.entityToDto(produto));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Venda.class, response.get(0).getClass());
+        assertEquals(vendaId, response.get(0).getIdVenda());
+        assertEquals(pedido, response.get(0).getPedido());
+        assertEquals(produto, response.get(0).getProduto());
+        assertEquals(desconto, response.get(0).getDesconto());
+        assertEquals(qtde, response.get(0).getQuantidade());
+        assertEquals(precoFinal, response.get(0).getPrecoFinal());
+    }
+
+    @Test
+    void whenFindByProdutoThenException()
+    {
+        Mockito.when(repository.findByProduto(Mockito.any())).thenReturn(List.of(venda));
+
+        try
+        {
+            List<Venda> response = service.findByProduct(ProdutoMapper.entityToDto(produto));
+        }
+        catch (Exception e)
+        {
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(notFoundMessage, e.getMessage());
+            assertNotNull(e);
+        }
+    }
+
+    @Test
+    void whenFindByPedidoThenSuccess()
+    {
+        Mockito.when(repository.findByPedido(Mockito.any())).thenReturn(List.of(venda));
+
+        List<Venda> response = service.findByPedido(PedidoMapper.entityToDto(pedido));
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Venda.class, response.get(0).getClass());
+        assertEquals(vendaId, response.get(0).getIdVenda());
+        assertEquals(pedido, response.get(0).getPedido());
+        assertEquals(produto, response.get(0).getProduto());
+        assertEquals(desconto, response.get(0).getDesconto());
+        assertEquals(qtde, response.get(0).getQuantidade());
+        assertEquals(precoFinal, response.get(0).getPrecoFinal());
     }
 
     @Test
     void whenFindByPedidoThenException()
     {
+        Mockito.when(repository.findByPedido(Mockito.any())).thenReturn(List.of(venda));
+
+        try
+        {
+            List<Venda> response = service.findByPedido(PedidoMapper.entityToDto(pedido));
+        }
+        catch (Exception e)
+        {
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(notFoundMessage, e.getMessage());
+            assertNotNull(e);
+        }
     }
 
     @Test

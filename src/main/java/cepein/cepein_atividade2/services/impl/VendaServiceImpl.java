@@ -57,21 +57,31 @@ public class VendaServiceImpl implements VendaService
     }
 
     @Override
-    public void delete(VendaDto dto)
+    public void delete(VendaId id)
     {
-        repository.delete(VendaMapper.dtoToEntity(dto));
+        repository.deleteById(id);
     }
 
     @Override
     public List<Venda> findByProduct(ProdutoDto produto)
     {
-        return repository.findByProduto(ProdutoMapper.dtoToEntity(produto));
+        List<Venda> list = repository.findByProduto(ProdutoMapper.dtoToEntity(produto));
+        if(list.isEmpty())
+        {
+            throw new ObjectNotFoundException(notFoundException);
+        }
+        return list;
     }
 
     @Override
     public List<Venda> findByPedido(PedidoDto pedido)
     {
-        return repository.findByPedido(PedidoMapper.dtoToEntity(pedido));
+        List<Venda> list = repository.findByPedido(PedidoMapper.dtoToEntity(pedido));
+        if(list.isEmpty())
+        {
+            throw new ObjectNotFoundException(notFoundException);
+        }
+        return list;
     }
 
     public void vendaValidation(Produto produto, Pedido pedido, VendaDto venda)

@@ -14,7 +14,7 @@ public interface VendaService
     List<Venda> findAll();
     Venda findById(VendaId id);
     Venda update(VendaDto dto);
-    void delete(VendaDto dto);
+    void delete(VendaId id);
     List<Venda> findByProduct(ProdutoDto produto);
     List<Venda> findByPedido(PedidoDto pedido);
 }
