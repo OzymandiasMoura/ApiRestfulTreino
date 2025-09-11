@@ -96,4 +96,11 @@ public class PedidoServiceImpl implements PedidoService
 
         return produtos;
     }
+
+    @Override
+    public Pedido findLastPedido(Integer id)
+    {
+        Optional<Pedido> obj = repository.findFirstByIdPedidoOrderByDataAberturaPedidoDesc(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+    }
 }

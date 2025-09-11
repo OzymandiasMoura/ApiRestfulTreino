@@ -15,4 +15,5 @@ public interface PedidoService
     void delete(Integer id);
     Pedido closeOrder(PedidoDto dto);
     List<Produto> findProdutosInPedido(PedidoDto dto);
+    Pedido findLastPedido(Integer id);
 }
