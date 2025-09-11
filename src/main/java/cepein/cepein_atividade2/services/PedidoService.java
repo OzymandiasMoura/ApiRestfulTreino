@@ -1,6 +1,7 @@
 package cepein.cepein_atividade2.services;
 
 import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface PedidoService
     Pedido update(PedidoDto dto);
     void delete(Integer id);
     Pedido closeOrder(PedidoDto dto);
+    List<Produto> findProdutosInPedido(PedidoDto dto);
 }

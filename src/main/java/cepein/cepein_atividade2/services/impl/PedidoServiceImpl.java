@@ -1,14 +1,19 @@
 package cepein.cepein_atividade2.services.impl;
 
 import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.Produto;
+import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
 import cepein.cepein_atividade2.repositories.PedidoRepository;
 import cepein.cepein_atividade2.services.PedidoService;
+import cepein.cepein_atividade2.services.VendaService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +83,17 @@ public class PedidoServiceImpl implements PedidoService
         {
             throw new DataIntegrityException(dataIntegrityMessage);
         }
+    }
+
+    @Override
+    public List<Produto> findProdutosInPedido(PedidoDto dto)
+    {
+        VendaService vendaService = new VendaServiceImpl();
+        List<Venda> vendas = vendaService.findByPedido(dto);
+
+        List<Produto> produtos = List.of();
+        vendas.forEach(venda -> produtos.add(venda.getProduto()));
+
+        return produtos;
     }
 }
