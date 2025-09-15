@@ -13,6 +13,7 @@ import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -98,9 +99,16 @@ public class PedidoServiceImpl implements PedidoService
     }
 
     @Override
-    public Pedido findLastPedido(Integer id)
+    public Pedido findLastPedido()
     {
-        Optional<Pedido> obj = repository.findFirstByIdPedidoOrderByDataAberturaPedidoDesc(id);
+        Optional<Pedido> obj = repository.findFirstByDataAberturaPedidoDesc();
         return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+    }
+
+    @Override
+    public List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim)
+    {
+        Optional<List<Pedido>> list = repository.findAllByDataAberturaPedidoBetween(dataInicio, dataFim);
+        return list.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 }

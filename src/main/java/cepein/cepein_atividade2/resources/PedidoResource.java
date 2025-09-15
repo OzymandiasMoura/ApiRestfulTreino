@@ -1,8 +1,11 @@
 package cepein.cepein_atividade2.resources;
 
 import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
+import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
+import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/pedido")
@@ -68,5 +72,22 @@ public class PedidoResource
         PedidoDto dto = PedidoMapper.entityToDto(pedido);
 
         return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping(value = "/{id}/produtos")
+    public ResponseEntity<List<ProdutoDto>> findAllProdutosById(@PathVariable Integer id)
+    {
+        Pedido pedido = service.findById(id);
+        List<Produto> list = service.findProdutosInPedido(PedidoMapper.entityToDto(pedido));
+        List<ProdutoDto> listDto = list.stream().map(ProdutoMapper::entityToDto).toList();
+
+        return ResponseEntity.ok().body(listDto);
+    }
+
+    @GetMapping(value = "/ultimo")
+    public ResponseEntity<PedidoDto> findLastPedido()
+    {
+        Pedido pedido = service.findLastPedido();
+        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
     }
 }

@@ -237,4 +237,19 @@ class PedidoServiceImplTest
             assertEquals(DataIntegrityException.class, e.getClass());
         }
     }
+
+    @Test
+    void findProdutosInPedido()
+    {
+    }
+
+    @Test
+    void findLastPedido()
+    {
+    }
+
+    @Test
+    void findPedidosBetweenDates()
+    {
+    }
 }

@@ -4,6 +4,7 @@ import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PedidoService
@@ -15,5 +16,6 @@ public interface PedidoService
     void delete(Integer id);
     Pedido closeOrder(PedidoDto dto);
     List<Produto> findProdutosInPedido(PedidoDto dto);
-    Pedido findLastPedido(Integer id);
+    Pedido findLastPedido();
+    List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim);
 }
