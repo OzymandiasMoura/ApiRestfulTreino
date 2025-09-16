@@ -6,15 +6,15 @@ import cepein.cepein_atividade2.domain.dto.PedidoDto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
 import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
+import cepein.cepein_atividade2.resources.tool.DataMapper;
 import cepein.cepein_atividade2.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/pedido")
@@ -90,4 +90,17 @@ public class PedidoResource
         Pedido pedido = service.findLastPedido();
         return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
     }
+
+    @GetMapping(value = "/{inicio}/{fim}")
+    public ResponseEntity<List<PedidoDto>> findPedidosBetweenDates(@PathVariable String inicio, @PathVariable String fim)
+    {
+        LocalDate dateinicio = DataMapper.stringToDate(inicio);
+        LocalDate dateFim = DataMapper.stringToDate(fim);
+
+        List<Pedido> list = service.findPedidosBetweenDates(dateinicio, dateFim);
+        List<PedidoDto> listDto = list.stream().map(PedidoMapper::entityToDto).toList();
+
+        return ResponseEntity.ok().body(listDto);
+    }
+
 }
