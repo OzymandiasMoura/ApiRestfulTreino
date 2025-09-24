@@ -196,7 +196,8 @@ class AtendenteServiceImplTest
         try
         {
             service.validationByCpf(atendenteDto);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             assertNotNull(ex);
             assertEquals(DataIntegrityException.class, ex.getClass());

@@ -2,6 +2,7 @@ package cepein.cepein_atividade2.services;
 
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
+import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 
 import java.time.LocalDate;
@@ -18,4 +19,6 @@ public interface PedidoService
     List<Produto> findProdutosInPedido(PedidoDto dto);
     Pedido findLastPedido();
     List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim);
+    List<Pedido> findByAtendenteOrderByDataAberturaPedido(AtendenteDto atendente);
+    List<Pedido> findByAtendenteOrderByDataAberturaPedidoDesc(AtendenteDto atendente);
 }

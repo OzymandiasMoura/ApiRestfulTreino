@@ -1,5 +1,6 @@
 package cepein.cepein_atividade2.services;
 
+import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import java.util.List;
@@ -14,4 +15,9 @@ public interface ProdutoService
     void validationByBarCode (ProdutoDto atendente);
     void delete(Integer id);
     Produto softDelete(ProdutoDto atendente);
+    List<Pedido> findPedidosInProdutos(ProdutoDto dto);
+    List<Produto> findByPrecoLessThan(Double preco);
+    List<Produto> findByPrecoLessThanEqual(Double preco);
+    List<Produto> findByPrecoGreaterThan(Double preco);
+    List<Produto> findByPrecoGreaterThanEqual(Double preco);
 }

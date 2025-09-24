@@ -2,7 +2,10 @@ package cepein.cepein_atividade2.resources;
 
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
+import cepein.cepein_atividade2.services.AtendenteService;
 import cepein.cepein_atividade2.services.PedidoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,6 +40,9 @@ class PedidoResourceTest
 
     @Mock
     private PedidoService service;
+
+    @Mock
+    private AtendenteService atendenteService;
 
     @BeforeEach
     void setUp()
@@ -151,5 +158,63 @@ class PedidoResourceTest
         assertEquals(atendente.getClass(), response.getBody().getAtendente().getClass());
         assertEquals(false, response.getBody().getAberta());
         assertNotNull(response.getBody().getDataFechamentoPedido());
+    }
+
+    @Test
+    void findLastPedido()
+    {
+        Mockito.when(service.findLastPedido()).thenReturn(pedido);
+
+        ResponseEntity<PedidoDto> response = resource.findLastPedido();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void findPedidosBetweenDates()
+    {
+        Mockito.when(service.findPedidosBetweenDates(Mockito.any(), Mockito.any())).thenReturn(List.of(pedido));
+
+        ResponseEntity<List<PedidoDto>> response = resource.findPedidosBetweenDates("01012025", "31012025");
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(PedidoDto.class, response.getBody().get(0).getClass());
+        assertEquals(LocalDate.of(2020,01,01), response.getBody().get(0).getDataAberturaPedido());
+    }
+
+    @Test
+    void findByAtendenteOrderByDataAberturaPedido()
+    {
+        Mockito.when(service.findByAtendenteOrderByDataAberturaPedido(Mockito.any())).thenReturn(List.of(pedido));
+
+        Integer idAtendente = atendente.getIdAtendente();
+        ResponseEntity<List<PedidoDto>> response  = resource.findByAtendenteOrderByDataAberturaPedido(idAtendente);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(PedidoDto.class, response.getBody().get(0).getClass());
+    }
+
+    @Test
+    void findByAtendenteOrderByDataAberturaPedidoDesc()
+    {
+        Mockito.when(service.findByAtendenteOrderByDataAberturaPedidoDesc(Mockito.mock(AtendenteDto.class))).thenReturn(List.of(pedido));
+
+        Integer idAtendente = atendente.getIdAtendente();
+        ResponseEntity<List<PedidoDto>> response  = resource.findByAtendenteOrderByDataAberturaPedidoDesc(idAtendente);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(PedidoDto.class, response.getBody().get(0).getClass());
     }
 }

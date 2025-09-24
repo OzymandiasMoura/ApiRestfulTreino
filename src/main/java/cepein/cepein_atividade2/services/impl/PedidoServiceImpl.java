@@ -3,7 +3,9 @@ package cepein.cepein_atividade2.services.impl;
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.Venda;
+import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
 import cepein.cepein_atividade2.repositories.PedidoRepository;
 import cepein.cepein_atividade2.services.PedidoService;
@@ -12,9 +14,7 @@ import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,14 +101,28 @@ public class PedidoServiceImpl implements PedidoService
     @Override
     public Pedido findLastPedido()
     {
-        Optional<Pedido> obj = repository.findFirstByDataAberturaPedidoDesc();
+        Optional<Pedido> obj = repository.findFirstByDataAberturaPedidoOrderByDesc();
         return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 
     @Override
     public List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim)
     {
-        Optional<List<Pedido>> list = repository.findAllByDataAberturaPedidoBetween(dataInicio, dataFim);
+        Optional<List<Pedido>> list = Optional.of(repository.findAllByDataAberturaPedidoBetween(dataInicio, dataFim));
         return list.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+    }
+
+    @Override
+    public List<Pedido> findByAtendenteOrderByDataAberturaPedido(AtendenteDto atendente)
+    {
+        Optional<List<Pedido>> pedidos = Optional.of(repository.findByAtendenteOrderByDataAberturaPedido(AtendenteMapper.dtoToEntity(atendente)));
+        return pedidos.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+    }
+
+    @Override
+    public List<Pedido> findByAtendenteOrderByDataAberturaPedidoDesc(AtendenteDto atendente)
+    {
+        Optional<List<Pedido>> pedidos = Optional.of(repository.findByAtendenteOrderByDataAberturaPedidoDesc(AtendenteMapper.dtoToEntity(atendente)));
+        return pedidos.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
     }
 }

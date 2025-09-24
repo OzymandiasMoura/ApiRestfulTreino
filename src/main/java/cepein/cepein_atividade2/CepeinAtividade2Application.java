@@ -2,7 +2,6 @@ package cepein.cepein_atividade2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 @SpringBootApplication
 public class CepeinAtividade2Application
 {

@@ -1,12 +1,16 @@
 package cepein.cepein_atividade2.resources;
 
+import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
+import cepein.cepein_atividade2.domain.dto.AtendenteDto;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
 import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.resources.tool.DataMapper;
+import cepein.cepein_atividade2.services.AtendenteService;
 import cepein.cepein_atividade2.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,9 @@ public class PedidoResource
 
     @Autowired
     private PedidoService service;
+
+    @Autowired
+    private AtendenteService atendenteService;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PedidoDto> findById(@PathVariable Integer id)
@@ -103,4 +110,24 @@ public class PedidoResource
         return ResponseEntity.ok().body(listDto);
     }
 
+    @GetMapping(value = "/atendente/{id}")
+    public ResponseEntity<List<PedidoDto>> findByAtendenteOrderByDataAberturaPedido(@PathVariable Integer id)
+    {
+        Atendente atendente = atendenteService.findById(id);
+        AtendenteDto dto = new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo());
+        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedido(dto);
+
+        List<PedidoDto> listDto = pedidos.stream().map(PedidoMapper::entityToDto).toList();
+        return ResponseEntity.ok().body(listDto);
+    }
+
+    @GetMapping(value = "/atendentedesc/{id}")
+    public ResponseEntity<List<PedidoDto>> findByAtendenteOrderByDataAberturaPedidoDesc(@PathVariable Integer id)
+    {
+        AtendenteDto dto = AtendenteMapper.entityToDto(atendenteService.findById(id));
+        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedidoDesc(dto);
+
+        List<PedidoDto> listDto = pedidos.stream().map(PedidoMapper::entityToDto).toList();
+        return ResponseEntity.ok().body(listDto);
+    }
 }

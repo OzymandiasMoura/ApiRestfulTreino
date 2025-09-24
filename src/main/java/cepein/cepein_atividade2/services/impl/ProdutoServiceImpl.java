@@ -1,14 +1,18 @@
 package cepein.cepein_atividade2.services.impl;
 
+import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
+import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
 import cepein.cepein_atividade2.repositories.ProdutoRepository;
 import cepein.cepein_atividade2.services.ProdutoService;
+import cepein.cepein_atividade2.services.VendaService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -84,11 +88,50 @@ public class ProdutoServiceImpl implements ProdutoService
     }
 
     @Override
-    public Produto softDelete(ProdutoDto atendente)
+    public Produto softDelete(ProdutoDto dto)
     {
-        validationByBarCode(atendente);
-        Produto produto = ProdutoMapper.dtoToEntity(atendente);
+        validationByBarCode(dto);
+        Produto produto = ProdutoMapper.dtoToEntity(dto);
         produto.setAtivo(false);
         return produto;
+    }
+
+    @Override
+    public List<Pedido> findPedidosInProdutos(ProdutoDto dto)
+    {
+        VendaService vendaService = new VendaServiceImpl();
+        List<Venda> listVendas = vendaService.findByProduct(dto);
+        List<Pedido> pedidos = List.of();
+        listVendas.forEach(pedido -> pedidos.add(pedido.getPedido()));
+
+        return pedidos;
+    }
+
+    @Override
+    public List<Produto> findByPrecoLessThan(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoLessThan(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoLessThanEqual(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoLessThanEqual(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoGreaterThan(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoGreaterThan(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoGreaterThanEqual(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoGreaterThanEqual(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
     }
 }

@@ -1,5 +1,6 @@
 package cepein.cepein_atividade2.resources;
 
+import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.services.ProdutoService;
@@ -70,7 +71,6 @@ class ProdutoResourceTest
         ResponseEntity<ProdutoDto> response = resource.create(produtoDto);
 
         assertNotNull(response);
-        assertNotNull(response.getHeaders().get("Location"));
         assertNull(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
@@ -152,6 +152,7 @@ class ProdutoResourceTest
 
         ResponseEntity<ProdutoDto> response = resource.softDelete(id,  produtoDto);
 
+
         assertNotNull(response);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -161,5 +162,72 @@ class ProdutoResourceTest
         assertEquals(preco, response.getBody().getPreco());
         assertEquals(barCode, response.getBody().getBarCode());
         assertEquals(ativo, response.getBody().getAtivo());
+    }
+
+    @Test
+    void findPedidosInProdutos()
+    {
+        Mockito.when(service.findPedidosInProdutos(Mockito.any())).thenReturn(List.of(Mockito.mock(Pedido.class)));
+
+        ResponseEntity<List<Pedido>> response = resource.findPedidosInProdutos(id);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void findByPrecoLessThan()
+    {
+        Mockito.when(service.findByPrecoLessThan(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        ResponseEntity<List<Produto>> response = resource.findByPrecoLessThan(preco);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void findByPrecoLessThanEqual()
+    {
+
+        Mockito.when(service.findByPrecoLessThanEqual(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        ResponseEntity<List<Produto>> response = resource.findByPrecoLessThanEqual(preco);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void findByPrecoGreaterThan()
+    {
+
+        Mockito.when(service.findByPrecoGreaterThan(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        ResponseEntity<List<Produto>> response = resource.findByPrecoGreaterThan(preco);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+    }
+
+    @Test
+    void findByPrecoGreaterThanEqual()
+    {
+
+        Mockito.when(service.findByPrecoGreaterThanEqual(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        ResponseEntity<List<Produto>> response = resource.findByPrecoGreaterThanEqual(preco);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
     }
 }

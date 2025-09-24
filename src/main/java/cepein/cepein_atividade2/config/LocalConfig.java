@@ -70,7 +70,7 @@ public class LocalConfig
     @Bean
     public List<Venda> startVendasDb()
     {
-        Venda v1 = new Venda(startPedidosDb().get(0), startProdutosDb().get(0), 3, 0.15);
+        Venda v1 = new Venda(startPedidosDb().getFirst(), startProdutosDb().get(0), 3, 0.15);
         Venda v2 = new Venda(startPedidosDb().get(0), startProdutosDb().get(1), 1, 0.15);
         Venda v3 = new Venda(startPedidosDb().get(0), startProdutosDb().get(2), 5, 0.15);
         Venda v4 = new Venda(startPedidosDb().get(1), startProdutosDb().get(5), 1, 0.20);

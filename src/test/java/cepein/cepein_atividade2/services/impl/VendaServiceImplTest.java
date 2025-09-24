@@ -253,4 +253,9 @@ class VendaServiceImplTest
             assertNotNull(e);
         }
     }
+
+    @Test
+    void findByProdutoAndPedido()
+    {
+    }
 }

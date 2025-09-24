@@ -303,4 +303,146 @@ class ProdutoServiceImplTest
             assertEquals(ObjectNotFoundException.class, e.getClass());
         }
     }
+
+    @Test
+    void findByPrecoLessThanSuccess()
+    {
+        Mockito.when(repository.findProdutosByPrecoLessThan(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        List<Produto> response = service.findByPrecoLessThan(preco);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdProduto());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(barCode, response.get(0).getBarCode());
+        assertEquals(preco, response.get(0).getPreco());
+        assertEquals(ativo, response.get(0).getAtivo());
+        assertEquals(1, response.size());
+
+    }
+
+    @Test
+    void findByPrecoLessThanException()
+    {
+        Mockito.when(repository.findProdutosByPrecoLessThan(Mockito.anyDouble())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            List<Produto> response = service.findByPrecoLessThan(preco);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
+    }
+
+    @Test
+    void findByPrecoLessThanEqualSuccess()
+    {
+        Mockito.when(repository.findProdutosByPrecoLessThanEqual(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        List<Produto> response = service.findByPrecoLessThanEqual(preco);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdProduto());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(barCode, response.get(0).getBarCode());
+        assertEquals(preco, response.get(0).getPreco());
+        assertEquals(ativo, response.get(0).getAtivo());
+        assertEquals(1, response.size());
+    }
+
+    @Test
+    void findByPrecoLessThanEqualException()
+    {
+        Mockito.when(repository.findProdutosByPrecoLessThanEqual(Mockito.anyDouble())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            List<Produto> response = service.findByPrecoLessThanEqual(preco);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
+    }
+
+    @Test
+    void findByPrecoGreaterThanSuccess()
+    {
+        Mockito.when(repository.findProdutosByPrecoGreaterThan(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        List<Produto> response = service.findByPrecoGreaterThan(preco);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdProduto());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(barCode, response.get(0).getBarCode());
+        assertEquals(preco, response.get(0).getPreco());
+        assertEquals(ativo, response.get(0).getAtivo());
+        assertEquals(1, response.size());
+    }
+
+    @Test
+    void findByPrecoGreaterThanException()
+    {
+        Mockito.when(repository.findProdutosByPrecoGreaterThan(Mockito.anyDouble())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            List<Produto> response = service.findByPrecoGreaterThan(preco);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
+    }
+
+    @Test
+    void findByPrecoGreaterThanEqualSuccess()
+    {
+        Mockito.when(repository.findProdutosByPrecoGreaterThanEqual(Mockito.anyDouble())).thenReturn(List.of(produto));
+
+        List<Produto> response = service.findByPrecoGreaterThanEqual(preco);
+
+        assertNotNull(response);
+        assertEquals(Produto.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdProduto());
+        assertEquals(nome, response.get(0).getNome());
+        assertEquals(barCode, response.get(0).getBarCode());
+        assertEquals(preco, response.get(0).getPreco());
+        assertEquals(ativo, response.get(0).getAtivo());
+        assertEquals(1, response.size());
+    }
+
+    @Test
+    void findByPrecoGreaterThanEqualException()
+    {
+        Mockito.when(repository.findProdutosByPrecoGreaterThanEqual(Mockito.anyDouble())).thenThrow(new ObjectNotFoundException(notFoundMessage));
+
+        try
+        {
+            List<Produto> response = service.findByPrecoGreaterThanEqual(preco);
+        }
+        catch (Exception e)
+        {
+            assertNotNull(e);
+            assertEquals(notFoundMessage, e.getMessage());
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+        }
+    }
+
+    @Test
+    void findPedidosInProdutos()
+    {
+    }
 }

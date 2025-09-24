@@ -2,8 +2,11 @@ package cepein.cepein_atividade2.services.impl;
 
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.repositories.PedidoRepository;
+import cepein.cepein_atividade2.repositories.VendaRepository;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
 import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +28,9 @@ class PedidoServiceImplTest
 
     @Mock
     PedidoRepository repository;
+
+    @Mock
+    VendaRepository vendaRepository;
 
     private static final String notFoundMessage = "Pedido não encontrado!";
     private static final String dataIntegrityMessage = "Pedido ja cadastrado";
@@ -241,15 +247,75 @@ class PedidoServiceImplTest
     @Test
     void findProdutosInPedido()
     {
+        Mockito.when(vendaRepository.findByPedido(Mockito.any())).thenReturn(List.of(Mockito.mock(Venda.class)));
+
+
     }
 
     @Test
     void findLastPedido()
     {
+        Mockito.when(repository.findFirstByDataAberturaPedidoOrderByDesc()).thenReturn(Optional.of(pedido));
+
+        Pedido response = service.findLastPedido();
+
+        assertNotNull(response);
+        assertEquals(Pedido.class, response.getClass());
+        assertEquals(id, response.getIdPedido());
+        assertEquals(date, response.getDataAberturaPedido());
+        assertEquals(atendente, response.getAtendente());
+        assertEquals(true, response.getAberta());
+        assertNull(response.getDataFechamentoPedido());
     }
 
     @Test
     void findPedidosBetweenDates()
     {
+        Mockito.when(repository.findAllByDataAberturaPedidoBetween(Mockito.any(), Mockito.any())).thenReturn(List.of(pedido));
+
+        List<Pedido> response = service.findPedidosBetweenDates(date, LocalDate.now());
+
+        assertNotNull(response);
+        assertEquals(Pedido.class, response.get(0).getClass());
+        assertEquals(id, response.get(0).getIdPedido());
+        assertEquals(date, response.get(0).getDataAberturaPedido());
+        assertEquals(atendente, response.get(0).getAtendente());
+        assertEquals(true, response.get(0).getAberta());
+        assertNull(response.get(0).getDataFechamentoPedido());
+        assertEquals(1, response.size());
+    }
+
+    @Test
+    void findByAtendenteOrderByDataAberturaPedido()
+    {
+        Mockito.when(repository.findByAtendenteOrderByDataAberturaPedido(Mockito.any())).thenReturn(List.of(pedido));
+
+        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedido(AtendenteMapper.entityToDto(atendente));
+
+        assertNotNull(pedidos);
+        assertEquals(Pedido.class, pedidos.get(0).getClass());
+        assertEquals(id, pedidos.get(0).getIdPedido());
+        assertEquals(date, pedidos.get(0).getDataAberturaPedido());
+        assertEquals(atendente, pedidos.get(0).getAtendente());
+        assertEquals(true, pedidos.get(0).getAberta());
+        assertNull(pedidos.get(0).getDataFechamentoPedido());
+        assertEquals(1, pedidos.size());
+    }
+
+    @Test
+    void findByAtendenteOrderByDataAberturaPedidoDesc()
+    {
+        Mockito.when(repository.findByAtendenteOrderByDataAberturaPedidoDesc(Mockito.any())).thenReturn(List.of(pedido));
+
+        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedidoDesc(AtendenteMapper.entityToDto(atendente));
+
+        assertNotNull(pedidos);
+        assertEquals(Pedido.class, pedidos.get(0).getClass());
+        assertEquals(id, pedidos.get(0).getIdPedido());
+        assertEquals(date, pedidos.get(0).getDataAberturaPedido());
+        assertEquals(atendente, pedidos.get(0).getAtendente());
+        assertEquals(true, pedidos.get(0).getAberta());
+        assertNull(pedidos.get(0).getDataFechamentoPedido());
+        assertEquals(1, pedidos.size());
     }
 }

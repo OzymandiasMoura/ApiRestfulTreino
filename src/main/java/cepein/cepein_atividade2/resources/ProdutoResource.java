@@ -1,5 +1,6 @@
 package cepein.cepein_atividade2.resources;
 
+import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
 import cepein.cepein_atividade2.domain.mapper.ProdutoMapper;
@@ -68,5 +69,44 @@ public class ProdutoResource
     {
         Produto produto = produtoService.softDelete(produtoDto);
         return ResponseEntity.ok().body(ProdutoMapper.entityToDto(produto));
+    }
+
+    @GetMapping(value = "/produtos/{id}")
+    public ResponseEntity<List<Pedido>> findPedidosInProdutos(@PathVariable Integer id)
+    {
+        Produto produto = produtoService.findById(id);
+
+        List<Pedido> pedidos = produtoService.findPedidosInProdutos(ProdutoMapper.entityToDto(produto));
+
+        return ResponseEntity.ok().body(pedidos);
+    }
+
+    @GetMapping(value = "/valor/less/{preco}")
+    public ResponseEntity<List<Produto>> findByPrecoLessThan(@PathVariable Double preco)
+    {
+        List<Produto> produtos = produtoService.findByPrecoLessThan(preco);
+
+        return ResponseEntity.ok().body(produtos);
+    }
+
+    @GetMapping(value = "/valor/lessequal/{valor}")
+    public ResponseEntity<List<Produto>> findByPrecoLessThanEqual(Double preco)
+    {
+        List<Produto> produtos = produtoService.findByPrecoLessThanEqual(preco);
+        return ResponseEntity.ok().body(produtos);
+    }
+
+    @GetMapping(value = "/valor/greater/{valor}")
+    public ResponseEntity<List<Produto>> findByPrecoGreaterThan(Double preco)
+    {
+        List<Produto> produtos = produtoService.findByPrecoGreaterThan(preco);
+        return ResponseEntity.ok().body(produtos);
+    }
+
+    @GetMapping(value = "/valor/greaterequal/{valor}")
+    public ResponseEntity<List<Produto>> findByPrecoGreaterThanEqual(Double preco)
+    {
+        List<Produto> produtos = produtoService.findByPrecoGreaterThanEqual(preco);
+        return ResponseEntity.ok().body(produtos);
     }
 }

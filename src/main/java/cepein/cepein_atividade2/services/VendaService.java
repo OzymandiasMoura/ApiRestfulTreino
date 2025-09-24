@@ -1,5 +1,7 @@
 package cepein.cepein_atividade2.services;
 
+import cepein.cepein_atividade2.domain.Pedido;
+import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.Venda;
 import cepein.cepein_atividade2.domain.dto.PedidoDto;
 import cepein.cepein_atividade2.domain.dto.ProdutoDto;
@@ -17,4 +19,5 @@ public interface VendaService
     void delete(VendaId id);
     List<Venda> findByProduct(ProdutoDto produto);
     List<Venda> findByPedido(PedidoDto pedido);
+    Venda findByProdutoAndPedido(ProdutoDto produto, PedidoDto pedido);
 }

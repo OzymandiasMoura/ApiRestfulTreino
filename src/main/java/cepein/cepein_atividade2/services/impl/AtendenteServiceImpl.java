@@ -2,6 +2,7 @@ package cepein.cepein_atividade2.services.impl;
 
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.repositories.AtendenteRepository;
 import cepein.cepein_atividade2.services.AtendenteService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
@@ -76,7 +77,7 @@ public class AtendenteServiceImpl implements AtendenteService
     {
         Atendente atendente1 = findById(atendente.getIdAtendente());
         atendente1.desativarAtendente();
-        update(new AtendenteDto(atendente1.getIdAtendente(), atendente1.getNome(), atendente1.getCpf(), atendente1.getAtivo()));
+        update(AtendenteMapper.entityToDto(atendente1));
 
         return atendente1;
     }
