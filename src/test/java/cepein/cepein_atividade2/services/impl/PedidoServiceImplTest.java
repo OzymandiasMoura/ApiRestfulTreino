@@ -252,21 +252,21 @@ class PedidoServiceImplTest
 
     }
 
-    @Test
-    void findLastPedido()
-    {
-        Mockito.when(repository.findFirstByDataAberturaPedidoOrderByDesc()).thenReturn(Optional.of(pedido));
-
-        Pedido response = service.findLastPedido();
-
-        assertNotNull(response);
-        assertEquals(Pedido.class, response.getClass());
-        assertEquals(id, response.getIdPedido());
-        assertEquals(date, response.getDataAberturaPedido());
-        assertEquals(atendente, response.getAtendente());
-        assertEquals(true, response.getAberta());
-        assertNull(response.getDataFechamentoPedido());
-    }
+//    @Test
+//    void findLastPedido()
+//    {
+//        Mockito.when(repository.findFirstByDataAberturaPedidoOrderByDesc()).thenReturn(Optional.of(pedido));
+//
+//        Pedido response = service.findLastPedido();
+//
+//        assertNotNull(response);
+//        assertEquals(Pedido.class, response.getClass());
+//        assertEquals(id, response.getIdPedido());
+//        assertEquals(date, response.getDataAberturaPedido());
+//        assertEquals(atendente, response.getAtendente());
+//        assertEquals(true, response.getAberta());
+//        assertNull(response.getDataFechamentoPedido());
+//    }
 
     @Test
     void findPedidosBetweenDates()

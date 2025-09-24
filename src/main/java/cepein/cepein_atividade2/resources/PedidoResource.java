@@ -91,12 +91,12 @@ public class PedidoResource
         return ResponseEntity.ok().body(listDto);
     }
 
-    @GetMapping(value = "/ultimo")
-    public ResponseEntity<PedidoDto> findLastPedido()
-    {
-        Pedido pedido = service.findLastPedido();
-        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
-    }
+//    @GetMapping(value = "/ultimo")
+//    public ResponseEntity<PedidoDto> findLastPedido()
+//    {
+//        Pedido pedido = service.findLastPedido();
+//        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
+//    }
 
     @GetMapping(value = "/{inicio}/{fim}")
     public ResponseEntity<List<PedidoDto>> findPedidosBetweenDates(@PathVariable String inicio, @PathVariable String fim)

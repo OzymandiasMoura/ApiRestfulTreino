@@ -160,18 +160,18 @@ class PedidoResourceTest
         assertNotNull(response.getBody().getDataFechamentoPedido());
     }
 
-    @Test
-    void findLastPedido()
-    {
-        Mockito.when(service.findLastPedido()).thenReturn(pedido);
-
-        ResponseEntity<PedidoDto> response = resource.findLastPedido();
-
-        assertNotNull(response);
-        assertNotNull(response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(ResponseEntity.class, response.getClass());
-    }
+//    @Test
+//    void findLastPedido()
+//    {
+//        Mockito.when(service.findLastPedido()).thenReturn(pedido);
+//
+//        ResponseEntity<PedidoDto> response = resource.findLastPedido();
+//
+//        assertNotNull(response);
+//        assertNotNull(response.getBody());
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertEquals(ResponseEntity.class, response.getClass());
+//    }
 
     @Test
     void findPedidosBetweenDates()

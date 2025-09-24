@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface PedidoRepository extends JpaRepository<Pedido, Integer>
 {
     List<Pedido> findAllByDataAberturaPedidoBetween(LocalDate dataInicio, LocalDate dataFim);
-    Optional<Pedido> findFirstByDataAberturaPedidoOrderByDesc();
+//    Optional<Pedido> findFirstByDataAberturaPedidoOrderByDesc();
     List<Pedido> findByAtendenteOrderByDataAberturaPedido(Atendente atendente);
     List<Pedido> findByAtendenteOrderByDataAberturaPedidoDesc(Atendente atendente);
 }

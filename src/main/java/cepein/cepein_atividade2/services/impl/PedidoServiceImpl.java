@@ -98,12 +98,12 @@ public class PedidoServiceImpl implements PedidoService
         return produtos;
     }
 
-    @Override
-    public Pedido findLastPedido()
-    {
-        Optional<Pedido> obj = repository.findFirstByDataAberturaPedidoOrderByDesc();
-        return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
-    }
+//    @Override
+//    public Pedido findLastPedido()
+//    {
+//        Optional<Pedido> obj = repository.findFirstByDataAberturaPedidoOrderByDesc();
+//        return obj.orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+//    }
 
     @Override
     public List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim)
