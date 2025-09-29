@@ -29,7 +29,7 @@ class PedidoResourceTest
 {
     private final Integer id = 1;
     private final LocalDate dataPedido = LocalDate.of(2020, 01, 01);
-    private final Atendente atendente = new Atendente("Pedro", "11111111111");
+    private Atendente atendente = new Atendente("Pedro", "11111111111");
     private final Boolean aberto  = true;
     private final LocalDate fechamento = null;
     private Pedido pedido;
@@ -193,8 +193,7 @@ class PedidoResourceTest
     {
         Mockito.when(service.findByAtendenteOrderByDataAberturaPedido(Mockito.any())).thenReturn(List.of(pedido));
 
-        Integer idAtendente = atendente.getIdAtendente();
-        ResponseEntity<List<PedidoDto>> response  = resource.findByAtendenteOrderByDataAberturaPedido(idAtendente);
+        ResponseEntity<List<PedidoDto>> response  = resource.findByAtendenteOrderByDataAberturaPedido(1);
 
         assertNotNull(response);
         assertNotNull(response.getBody());

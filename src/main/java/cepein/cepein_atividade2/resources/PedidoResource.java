@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/pedido")
@@ -114,8 +115,7 @@ public class PedidoResource
     public ResponseEntity<List<PedidoDto>> findByAtendenteOrderByDataAberturaPedido(@PathVariable Integer id)
     {
         Atendente atendente = atendenteService.findById(id);
-        AtendenteDto dto = new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo());
-        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedido(dto);
+        List<Pedido> pedidos = service.findByAtendenteOrderByDataAberturaPedido(AtendenteMapper.entityToDto(atendente));
 
         List<PedidoDto> listDto = pedidos.stream().map(PedidoMapper::entityToDto).toList();
         return ResponseEntity.ok().body(listDto);

@@ -25,7 +25,7 @@ public class AtendenteResource
         return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
     }
 
-    @GetMapping(value = "/{cpf}")
+    @GetMapping(value = "/cpf/{cpf}")
     public ResponseEntity<AtendenteDto> findByCpf(@PathVariable String cpf)
     {
         Atendente atendente = service.findByCpf(cpf);
