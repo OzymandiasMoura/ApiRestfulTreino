@@ -9,7 +9,6 @@ public interface AtendenteService
     Atendente findById(Integer id);
     Atendente create(AtendenteDto atendente);
     List<Atendente> findAll();
-
     Atendente update(Integer id, AtendenteDto atendenteDto);
     Atendente findByCpf(String cpf);
     void validationByCpf(AtendenteDto atendente);
