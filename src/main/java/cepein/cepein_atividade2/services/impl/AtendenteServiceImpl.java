@@ -42,10 +42,14 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
-    public Atendente update(AtendenteDto atendente)
+    public Atendente update(Integer id, AtendenteDto atendenteDto)
     {
-        validationByCpf(atendente);
-        return repository.save(new Atendente(atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+        Atendente atendente = repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(objectNotFoundMessage));
+        atendente.setNome(atendenteDto.getNome());
+        atendente.setCpf(atendenteDto.getCpf());
+        atendente.setAtivo(atendenteDto.getAtivo());
+        validationByCpf(AtendenteMapper.entityToDto(atendente));
+        return repository.save(atendente);
     }
 
     @Override
@@ -60,7 +64,7 @@ public class AtendenteServiceImpl implements AtendenteService
     {
         final String dataIntegrityMessage = "Cpf já cadastrado no sistema!";
         Optional<Atendente> optional = repository.findByCpf(atendente.getCpf());
-        if(optional.isPresent() && optional.get().getIdAtendente().equals(atendente.getIdAtendente()))
+        if(optional.isPresent() && !optional.get().getIdAtendente().equals(atendente.getIdAtendente()))
         {
             throw new DataIntegrityException(dataIntegrityMessage);
         }
@@ -73,11 +77,11 @@ public class AtendenteServiceImpl implements AtendenteService
     }
 
     @Override
-    public Atendente softDelete(AtendenteDto atendente)
+    public Atendente softDelete(Integer id)
     {
-        Atendente atendente1 = findById(atendente.getIdAtendente());
-        atendente1.desativarAtendente();
-        update(AtendenteMapper.entityToDto(atendente1));
+        Atendente atendente1 = findById(id);
+        atendente1.setAtivo(false);
+        repository.save(atendente1);
 
         return atendente1;
     }

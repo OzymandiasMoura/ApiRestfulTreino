@@ -133,7 +133,7 @@ class AtendenteServiceImplTest
     {
         Mockito.when(repository.save(Mockito.any())).thenReturn(atendente);
 
-        Atendente response = service.update(atendenteDto);
+        Atendente response = service.update(id, atendenteDto);
 
         assertNotNull(response);
         assertEquals(Atendente.class, response.getClass());
@@ -149,7 +149,7 @@ class AtendenteServiceImplTest
 
         try
         {
-            service.update(atendenteDto);
+            service.update(id, atendenteDto);
         } catch (Exception ex)
         {
             assertNotNull(ex);
@@ -233,7 +233,7 @@ class AtendenteServiceImplTest
     {
         Mockito.when(repository.findById(Mockito.any())).thenReturn(atendenteOptional);
 
-        Atendente response = service.softDelete(atendenteDto);
+        Atendente response = service.softDelete(id);
 
         assertNotNull(response);
         assertEquals(Atendente.class, response.getClass());
@@ -249,7 +249,7 @@ class AtendenteServiceImplTest
         Mockito.when(repository.findById(Mockito.any())).thenThrow(new ObjectNotFoundException(notFoundMessage));
         try
         {
-            Atendente response = service.softDelete(atendenteDto);
+            Atendente response = service.softDelete(id);
         }
         catch (Exception ex)
         {

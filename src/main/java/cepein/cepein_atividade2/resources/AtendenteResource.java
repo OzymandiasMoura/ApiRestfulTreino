@@ -2,6 +2,7 @@ package cepein.cepein_atividade2.resources;
 
 import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.dto.AtendenteDto;
+import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.services.AtendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +48,11 @@ public class AtendenteResource
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<AtendenteDto> update(@PathVariable Integer id, @RequestBody AtendenteDto atendenteDto)
     {
-        Atendente atendente = service.update(atendenteDto);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+        Atendente atendente = service.update(id, atendenteDto);
+        return ResponseEntity.ok().body(AtendenteMapper.entityToDto(atendente));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -62,9 +63,9 @@ public class AtendenteResource
     }
 
     @PutMapping(value = "/delete/{id}")
-    public ResponseEntity<AtendenteDto> softDelete(@PathVariable Integer id,  @RequestBody AtendenteDto atendenteDto)
+    public ResponseEntity<AtendenteDto> softDelete(@PathVariable Integer id)
     {
-        Atendente atendente = service.softDelete(atendenteDto);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+        Atendente atendente = service.softDelete(id);
+        return ResponseEntity.ok().body(AtendenteMapper.entityToDto(atendente));
     }
 }

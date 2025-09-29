@@ -172,7 +172,7 @@ class AtendenteResourceTest
     @Test
     void whenUpdateThenReturnSuccess()
     {
-        Mockito.when(service.update(Mockito.any(AtendenteDto.class))).thenReturn(atendente);
+        Mockito.when(service.update(Mockito.anyInt(), Mockito.any(AtendenteDto.class))).thenReturn(atendente);
 
         ResponseEntity<AtendenteDto> response = resource.update(id, atendenteDto);
 
@@ -190,7 +190,7 @@ class AtendenteResourceTest
     @Test
     void whenUpdateThenReturnException()
     {
-        Mockito.when(service.update(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+        Mockito.when(service.update(Mockito.anyInt() ,Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
 
         try
         {
@@ -239,9 +239,9 @@ class AtendenteResourceTest
     @Test
     void whenSoftDeleteThenReturnSuccess()
     {
-        Mockito.when(service.softDelete(Mockito.any(AtendenteDto.class))).thenReturn(atendente);
+        Mockito.when(service.softDelete(Mockito.anyInt())).thenReturn(atendente);
 
-        ResponseEntity<AtendenteDto> response = resource.softDelete(id, atendenteDto);
+        ResponseEntity<AtendenteDto> response = resource.softDelete(id);
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -257,11 +257,11 @@ class AtendenteResourceTest
     @Test
     void whenSoftDeleteThenReturnException()
     {
-        Mockito.when(service.softDelete(Mockito.any(AtendenteDto.class))).thenThrow(new DataIntegrityException(dataIntegrityMessage));
+        Mockito.when(service.softDelete(Mockito.anyInt())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
 
         try
         {
-            ResponseEntity<AtendenteDto> response = resource.softDelete(id, atendenteDto);
+            ResponseEntity<AtendenteDto> response = resource.softDelete(id);
         }
         catch (Exception ex)
         {
