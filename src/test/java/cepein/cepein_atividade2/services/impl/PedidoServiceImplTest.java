@@ -198,9 +198,10 @@ class PedidoServiceImplTest
     @Test
     void whenCloseOrderThenSuccess()
     {
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(pedido));
         Mockito.when(repository.save(Mockito.any())).thenReturn(pedido);
 
-        Pedido response = service.closeOrder(dto);
+        Pedido response = service.closeOrder(id);
 
         assertNotNull(response);
         assertEquals(Pedido.class, response.getClass());
@@ -217,7 +218,7 @@ class PedidoServiceImplTest
         Mockito.when(repository.save(Mockito.any())).thenThrow(new DataIntegrityException(dataIntegrityMessage));
         try
         {
-            service.closeOrder(dto);
+            service.closeOrder(id);
         }
         catch(Exception e)
         {

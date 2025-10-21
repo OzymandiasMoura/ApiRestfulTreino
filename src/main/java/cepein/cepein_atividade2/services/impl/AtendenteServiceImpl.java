@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AtendenteServiceImpl implements AtendenteService
+public class  AtendenteServiceImpl implements AtendenteService
 {
     @Autowired
     private AtendenteRepository repository;

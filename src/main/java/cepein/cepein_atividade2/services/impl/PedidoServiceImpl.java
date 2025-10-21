@@ -15,6 +15,7 @@ import cepein.cepein_atividade2.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,9 @@ public class PedidoServiceImpl implements PedidoService
     final String objectNotFoundMessage = "Pedido não encontrado!";
     @Autowired
     PedidoRepository repository;
+
+    @Autowired
+    VendaService vendaService;
 
     @Override
     public Pedido findById(Integer id)
@@ -36,7 +40,7 @@ public class PedidoServiceImpl implements PedidoService
     public Pedido create(PedidoDto dto)
     {
         validationOrder(dto);
-        return repository.save(PedidoMapper.dtoToEntity(dto));
+        return repository.save(new Pedido(dto.getDataAberturaPedido(), dto.getAtendente()));
     }
 
     @Override
@@ -66,14 +70,17 @@ public class PedidoServiceImpl implements PedidoService
     }
 
     @Override
-    public Pedido closeOrder(PedidoDto dto)
+    public Pedido closeOrder(Integer id)
     {
-        validationOrder(dto);
-        Pedido obj = PedidoMapper.dtoToEntity(dto);
-        obj.fecharPedido();
+        Pedido pedido = findById(id);
 
-        repository.save(obj);
-        return obj;
+        pedido.setAberta(false);
+        pedido.setDataFechamentoPedido(LocalDate.now());
+
+        repository.save(pedido);
+
+        return pedido;
+
     }
 
     void validationOrder(PedidoDto dto)
@@ -87,12 +94,12 @@ public class PedidoServiceImpl implements PedidoService
     }
 
     @Override
-    public List<Produto> findProdutosInPedido(PedidoDto dto)
+    public List<Produto> findProdutosInPedido(Integer id)
     {
-        VendaService vendaService = new VendaServiceImpl();
-        List<Venda> vendas = vendaService.findByPedido(dto);
+        Pedido pedido = findById(id);
+        List<Venda> vendas = vendaService.findByPedido(PedidoMapper.entityToDto(pedido));
 
-        List<Produto> produtos = List.of();
+        List<Produto> produtos = new ArrayList<>();
         vendas.forEach(venda -> produtos.add(venda.getProduto()));
 
         return produtos;

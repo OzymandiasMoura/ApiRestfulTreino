@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/pedido")
@@ -50,8 +49,7 @@ public class PedidoResource
     @PostMapping
     public ResponseEntity<PedidoDto> create(@RequestBody PedidoDto pedidoDto)
     {
-
-        Pedido pedido = mapper.dtoToEntity(pedidoDto);
+        Pedido pedido = service.create(pedidoDto);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getIdPedido()).toUri();
         return ResponseEntity.created(uri).build();
@@ -71,33 +69,22 @@ public class PedidoResource
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/closeOrder/{id}")
-    public ResponseEntity<PedidoDto> closeOrder(@PathVariable Integer id, @RequestBody PedidoDto pedidoDto)
+    @PutMapping(value = "/closeorder/{id}")
+    public ResponseEntity<PedidoDto> closeOrder(@PathVariable Integer id)
     {
-        Pedido pedido = PedidoMapper.dtoToEntity(pedidoDto);
-        pedido.fecharPedido();
+        Pedido pedido = service.closeOrder(id);
 
-        PedidoDto dto = PedidoMapper.entityToDto(pedido);
-
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
     }
 
     @GetMapping(value = "/{id}/produtos")
     public ResponseEntity<List<ProdutoDto>> findAllProdutosById(@PathVariable Integer id)
     {
-        Pedido pedido = service.findById(id);
-        List<Produto> list = service.findProdutosInPedido(PedidoMapper.entityToDto(pedido));
+        List<Produto> list = service.findProdutosInPedido(id);
         List<ProdutoDto> listDto = list.stream().map(ProdutoMapper::entityToDto).toList();
 
         return ResponseEntity.ok().body(listDto);
     }
-
-//    @GetMapping(value = "/ultimo")
-//    public ResponseEntity<PedidoDto> findLastPedido()
-//    {
-//        Pedido pedido = service.findLastPedido();
-//        return ResponseEntity.ok().body(PedidoMapper.entityToDto(pedido));
-//    }
 
     @GetMapping(value = "/{inicio}/{fim}")
     public ResponseEntity<List<PedidoDto>> findPedidosBetweenDates(@PathVariable String inicio, @PathVariable String fim)

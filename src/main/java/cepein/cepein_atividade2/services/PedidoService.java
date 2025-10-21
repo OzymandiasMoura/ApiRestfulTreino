@@ -15,9 +15,8 @@ public interface PedidoService
     List<Pedido> findAll();
     Pedido update(PedidoDto dto);
     void delete(Integer id);
-    Pedido closeOrder(PedidoDto dto);
-    List<Produto> findProdutosInPedido(PedidoDto dto);
-//    Pedido findLastPedido();
+    Pedido closeOrder(Integer id);
+    List<Produto> findProdutosInPedido(Integer id);
     List<Pedido> findPedidosBetweenDates(LocalDate dataInicio, LocalDate dataFim);
     List<Pedido> findByAtendenteOrderByDataAberturaPedido(AtendenteDto atendente);
     List<Pedido> findByAtendenteOrderByDataAberturaPedidoDesc(AtendenteDto atendente);

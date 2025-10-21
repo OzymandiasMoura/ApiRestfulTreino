@@ -20,7 +20,6 @@ import java.util.Optional;
 public class ProdutoServiceImpl implements ProdutoService
 {
     private final String notFoundException = "Produto não encontrado";
-    //private final String invalidFormatExceptionMessage = "Código de barras é invalido.";
 
     @Autowired
     private ProdutoRepository repository;
@@ -69,18 +68,6 @@ public class ProdutoServiceImpl implements ProdutoService
             throw  new DataIntegrityException(dataIntegrityExceptionMessage);
         }
     }
-
-//    public void validateBarCodeFormat(ProdutoDto produtoDto)
-//    {
-//        //Quebrado!!!!!
-//        Optional<Produto> produto = repository.findByBarCode(produtoDto.getBarCode());
-//        Integer tamanho = produto.get().getBarCode().length();
-//        if (!( tamanho == 13) && !(tamanho == 8))
-//        {
-//            throw  new InvalidFormatException(invalidFormatExceptionMessage);
-//        }
-//    }
-
     @Override
     public void delete(Integer id)
     {

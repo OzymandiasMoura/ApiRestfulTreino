@@ -146,7 +146,7 @@ class PedidoResourceTest
     {
         Mockito.when(service.closeOrder(Mockito.any())).thenReturn(pedido);
 
-        ResponseEntity<PedidoDto> response = resource.closeOrder(id, dto);
+        ResponseEntity<PedidoDto> response = resource.closeOrder(id);
 
         assertNotNull(response);
         assertNotNull(response.getBody());

@@ -22,7 +22,7 @@ public class ProdutoResource
     @Autowired
     ProdutoService produtoService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/find/{id}")
     public ResponseEntity<ProdutoDto> findById(@PathVariable Integer id)
     {
         Produto produto = produtoService.findById(id);
@@ -43,14 +43,14 @@ public class ProdutoResource
         return ResponseEntity.ok().body(produtoService.findAll().stream().map(ProdutoMapper::entityToDto).toList());
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<ProdutoDto> update(@PathVariable Integer id, @RequestBody ProdutoDto produtoDto)
     {
         Produto produto = produtoService.update(produtoDto);
         return ResponseEntity.ok().body(ProdutoMapper.entityToDto(produto));
     }
 
-    @GetMapping(value = "/{barCode}")
+    @GetMapping(value = "/find/barcode/{barCode}")
     public ResponseEntity<ProdutoDto> findByBarCode(@PathVariable String barCode)
     {
         Produto produto = produtoService.findByBarCode(barCode);
@@ -71,7 +71,7 @@ public class ProdutoResource
         return ResponseEntity.ok().body(ProdutoMapper.entityToDto(produto));
     }
 
-    @GetMapping(value = "/produtos/{id}")
+    @GetMapping(value = "/pedido/{id}")
     public ResponseEntity<List<Pedido>> findPedidosInProdutos(@PathVariable Integer id)
     {
         Produto produto = produtoService.findById(id);
@@ -89,22 +89,22 @@ public class ProdutoResource
         return ResponseEntity.ok().body(produtos);
     }
 
-    @GetMapping(value = "/valor/lessequal/{valor}")
-    public ResponseEntity<List<Produto>> findByPrecoLessThanEqual(Double preco)
+    @GetMapping(value = "/valor/less/equal/{preco}")
+    public ResponseEntity<List<Produto>> findByPrecoLessThanEqual(@PathVariable Double preco)
     {
         List<Produto> produtos = produtoService.findByPrecoLessThanEqual(preco);
         return ResponseEntity.ok().body(produtos);
     }
 
-    @GetMapping(value = "/valor/greater/{valor}")
-    public ResponseEntity<List<Produto>> findByPrecoGreaterThan(Double preco)
+    @GetMapping(value = "/valor/greater/{preco}")
+    public ResponseEntity<List<Produto>> findByPrecoGreaterThan(@PathVariable Double preco)
     {
         List<Produto> produtos = produtoService.findByPrecoGreaterThan(preco);
         return ResponseEntity.ok().body(produtos);
     }
 
-    @GetMapping(value = "/valor/greaterequal/{valor}")
-    public ResponseEntity<List<Produto>> findByPrecoGreaterThanEqual(Double preco)
+    @GetMapping(value = "/valor/greaterequal/{preco}")
+    public ResponseEntity<List<Produto>> findByPrecoGreaterThanEqual(@PathVariable Double preco)
     {
         List<Produto> produtos = produtoService.findByPrecoGreaterThanEqual(preco);
         return ResponseEntity.ok().body(produtos);
