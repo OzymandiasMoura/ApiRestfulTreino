@@ -17,5 +17,5 @@ public interface VendaRepository extends JpaRepository<Venda, Integer>
     List<Venda> findByPedido(Pedido pedido);
     Optional<Venda> findById(Serializable id);
     void deleteById(Serializable id);
-    Optional<Venda> findByProdutoAndPedido(Produto produto, Pedido pedido);
+    Optional<Venda> findVendaByProdutoAndPedido(Produto produto, Pedido pedido);
 }

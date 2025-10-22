@@ -100,7 +100,7 @@ public class VendaServiceImpl implements VendaService
     @Override
     public Venda findByProdutoAndPedido(ProdutoDto produto, PedidoDto pedido)
     {
-        Optional<Venda> venda = repository.findByProdutoAndPedido(ProdutoMapper.dtoToEntity(produto), PedidoMapper.dtoToEntity(pedido));
+        Optional<Venda> venda = repository.findVendaByProdutoAndPedido(ProdutoMapper.dtoToEntity(produto), PedidoMapper.dtoToEntity(pedido));
         return venda.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
     }
 }
