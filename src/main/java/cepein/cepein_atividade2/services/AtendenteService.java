@@ -14,4 +14,5 @@ public interface AtendenteService
     void validationByCpf(AtendenteDto atendente);
     void delete(Integer id);
     Atendente softDelete(Integer id);
+    List<Atendente> findByCpfOrIdAtendente(String cpf, Integer idAtendente);
 }

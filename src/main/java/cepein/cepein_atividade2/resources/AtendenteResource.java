@@ -19,24 +19,26 @@ public class AtendenteResource
     @Autowired
     private AtendenteService service;
 
+    AtendenteMapper mapper = new AtendenteMapper();
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<AtendenteDto> findById(@PathVariable Integer id)
     {
         Atendente atendente = service.findById(id);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+        return ResponseEntity.ok().body(mapper.entityToDto(atendente));
     }
 
     @GetMapping(value = "/cpf/{cpf}")
     public ResponseEntity<AtendenteDto> findByCpf(@PathVariable String cpf)
     {
         Atendente atendente = service.findByCpf(cpf);
-        return ResponseEntity.ok().body(new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo()));
+        return ResponseEntity.ok().body(mapper.entityToDto(atendente));
     }
 
     @GetMapping
     public ResponseEntity<List<AtendenteDto>> findAll()
     {
-        return ResponseEntity.ok().body(service.findAll().stream().map(atendente -> new AtendenteDto(atendente.getIdAtendente(), atendente.getNome(), atendente.getCpf(), atendente.getAtivo())).toList());
+        return ResponseEntity.ok().body(service.findAll().stream().map(AtendenteMapper::entityToDto).toList());
     }
 
     @PostMapping
@@ -52,7 +54,7 @@ public class AtendenteResource
     public ResponseEntity<AtendenteDto> update(@PathVariable Integer id, @RequestBody AtendenteDto atendenteDto)
     {
         Atendente atendente = service.update(id, atendenteDto);
-        return ResponseEntity.ok().body(AtendenteMapper.entityToDto(atendente));
+        return ResponseEntity.ok().body(mapper.entityToDto(atendente));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -66,6 +68,14 @@ public class AtendenteResource
     public ResponseEntity<AtendenteDto> softDelete(@PathVariable Integer id)
     {
         Atendente atendente = service.softDelete(id);
-        return ResponseEntity.ok().body(AtendenteMapper.entityToDto(atendente));
+        return ResponseEntity.ok().body(mapper.entityToDto(atendente));
+    }
+
+    @GetMapping(value = "/find/cpforid")
+    public ResponseEntity<List<AtendenteDto>> findByCpfOrIdAtendente(@RequestParam String cpf, @RequestParam Integer idAtendente)
+    {
+        List<Atendente> atendente = service.findByCpfOrIdAtendente(cpf, idAtendente);
+
+        return ResponseEntity.ok().body(atendente.stream().map(AtendenteMapper::entityToDto).toList());
     }
 }

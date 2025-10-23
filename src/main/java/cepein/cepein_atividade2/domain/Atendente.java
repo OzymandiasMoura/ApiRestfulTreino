@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -27,6 +30,10 @@ public class Atendente
     @NonNull
     private Boolean ativo;
 
+    @Transient
+    @OneToMany(mappedBy = "atendente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pedido> pedidos = new ArrayList<>();
+
     public Atendente(String nome, String cpf)
     {
         this.nome = nome;
@@ -34,8 +41,18 @@ public class Atendente
         this.ativo = true;
     }
 
-    public void desativarAtendente()
+    public List<Pedido> addPedido(Pedido pedido)
     {
-        setAtivo(false);
+        if(!(pedidos instanceof ArrayList)){
+            pedidos = new ArrayList<>(pedidos);
+        }
+        this.pedidos.add(pedido);
+        return pedidos;
+    }
+
+    public List<Pedido> removePedido(Pedido pedido)
+    {
+        this.pedidos.remove(pedido);
+        return pedidos;
     }
 }

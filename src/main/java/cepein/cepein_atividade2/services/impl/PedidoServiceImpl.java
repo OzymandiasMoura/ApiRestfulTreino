@@ -1,5 +1,6 @@
 package cepein.cepein_atividade2.services.impl;
 
+import cepein.cepein_atividade2.domain.Atendente;
 import cepein.cepein_atividade2.domain.Pedido;
 import cepein.cepein_atividade2.domain.Produto;
 import cepein.cepein_atividade2.domain.Venda;
@@ -8,6 +9,7 @@ import cepein.cepein_atividade2.domain.dto.PedidoDto;
 import cepein.cepein_atividade2.domain.mapper.AtendenteMapper;
 import cepein.cepein_atividade2.domain.mapper.PedidoMapper;
 import cepein.cepein_atividade2.repositories.PedidoRepository;
+import cepein.cepein_atividade2.services.AtendenteService;
 import cepein.cepein_atividade2.services.PedidoService;
 import cepein.cepein_atividade2.services.VendaService;
 import cepein.cepein_atividade2.services.exceptions.DataIntegrityException;
@@ -29,6 +31,9 @@ public class PedidoServiceImpl implements PedidoService
     @Autowired
     VendaService vendaService;
 
+    @Autowired
+    AtendenteService atendenteService;
+
     @Override
     public Pedido findById(Integer id)
     {
@@ -40,6 +45,9 @@ public class PedidoServiceImpl implements PedidoService
     public Pedido create(PedidoDto dto)
     {
         validationOrder(dto);
+        Atendente atendente = dto.getAtendente();
+        atendente.addPedido(PedidoMapper.dtoToEntity(dto));
+        atendenteService.update(atendente.getIdAtendente(), AtendenteMapper.entityToDto(atendente));
         return repository.save(new Pedido(dto.getDataAberturaPedido(), dto.getAtendente()));
     }
 

@@ -85,4 +85,10 @@ public class  AtendenteServiceImpl implements AtendenteService
 
         return atendente1;
     }
+
+    @Override
+    public List<Atendente> findByCpfOrIdAtendente(String cpf, Integer idAtendente)
+    {
+        return repository.findByCpfOrIdAtendente(cpf, idAtendente);
+    }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Pedido
 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPedido;
@@ -34,14 +35,14 @@ public class Pedido
     public Pedido(LocalDate dataPedido, Atendente atendente)
     {
         this.dataAberturaPedido = dataPedido;
-        this.atendente = atendente;
         this.aberta = true;
         this.dataFechamentoPedido = null;
+        setAtendente(atendente);
     }
-
-    public void fecharPedido()
-    {
-        setAberta(false);
-        setDataFechamentoPedido(LocalDate.now());
-    }
+//
+//    public void setAtendente(Atendente atendente)
+//    {
+//        this.atendente = atendente;
+//        atendente.addPedido(this);
+//    }
 }
