@@ -1,13 +1,7 @@
 package cepein.cepein_atividade2.config;
 
-import cepein.cepein_atividade2.domain.Atendente;
-import cepein.cepein_atividade2.domain.Pedido;
-import cepein.cepein_atividade2.domain.Produto;
-import cepein.cepein_atividade2.domain.Venda;
-import cepein.cepein_atividade2.repositories.AtendenteRepository;
-import cepein.cepein_atividade2.repositories.PedidoRepository;
-import cepein.cepein_atividade2.repositories.ProdutoRepository;
-import cepein.cepein_atividade2.repositories.VendaRepository;
+import cepein.cepein_atividade2.domain.*;
+import cepein.cepein_atividade2.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +24,9 @@ public class LocalConfig
 
     @Autowired
     private VendaRepository vendaRepository;
+
+    @Autowired
+    private MesaRepository mesaRepository;
 
     @Bean
     public List<Atendente> startAtendenteDb()
@@ -80,6 +77,18 @@ public class LocalConfig
 
         return vendaRepository.saveAll(List.of(v1, v2, v3, v4, v5, v6, v7));
     }
+
+    @Bean
+    public List<Mesa> startMesaDb()
+    {
+        Mesa m1 = new Mesa(startAtendenteDb().get(0));
+        Mesa m2 = new Mesa(startAtendenteDb().get(1));
+        Mesa m3 = new Mesa(startAtendenteDb().get(3));
+
+        return mesaRepository.saveAll(List.of(m1, m2, m3));
+    }
+
+
 }
 
 

@@ -15,4 +15,5 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer>
     List<Produto> findProdutosByPrecoLessThanEqual(Double preco);
     List<Produto> findProdutosByPrecoGreaterThan(Double preco);
     List<Produto> findProdutosByPrecoGreaterThanEqual(Double preco);
+    List<Produto> findProdutosByPrecoIn(List<Double> preco);
 }

@@ -20,4 +20,5 @@ public interface ProdutoService
     List<Produto> findByPrecoLessThanEqual(Double preco);
     List<Produto> findByPrecoGreaterThan(Double preco);
     List<Produto> findByPrecoGreaterThanEqual(Double preco);
+    List<Produto> findByPrecoIn(List<Double> preco);
 }

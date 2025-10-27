@@ -109,4 +109,11 @@ public class ProdutoResource
         List<Produto> produtos = produtoService.findByPrecoGreaterThanEqual(preco);
         return ResponseEntity.ok().body(produtos);
     }
+
+    @GetMapping(value = "/find/valor")
+    public ResponseEntity<List<ProdutoDto>> findProdutoByPrecoIn(@RequestParam List<Double> preco)
+    {
+        List<Produto> produtos = produtoService.findByPrecoIn(preco);
+        return ResponseEntity.ok().body(produtos.stream().map(ProdutoMapper::entityToDto).toList());
+    }
 }

@@ -121,4 +121,12 @@ public class ProdutoServiceImpl implements ProdutoService
         Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoGreaterThanEqual(preco));
         return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
     }
+
+    @Override
+    public List<Produto> findByPrecoIn(List<Double> preco)
+    {
+        return repository.findProdutosByPrecoIn(preco);
+    }
+
+
 }
