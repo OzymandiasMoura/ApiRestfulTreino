@@ -1,0 +1,132 @@
+package cepein.atividade2.services.impl;
+
+import cepein.atividade2.domain.Pedido;
+import cepein.atividade2.domain.Produto;
+import cepein.atividade2.domain.Venda;
+import cepein.atividade2.domain.dto.ProdutoDto;
+import cepein.atividade2.domain.mapper.ProdutoMapper;
+import cepein.atividade2.repositories.ProdutoRepository;
+import cepein.atividade2.services.ProdutoService;
+import cepein.atividade2.services.VendaService;
+import cepein.atividade2.services.exceptions.DataIntegrityException;
+import cepein.atividade2.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProdutoServiceImpl implements ProdutoService
+{
+    private final String notFoundException = "Produto não encontrado";
+
+    @Autowired
+    private ProdutoRepository repository;
+
+    @Override
+    public Produto findById(Integer id)
+    {
+        return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public Produto create(ProdutoDto dto)
+    {
+        validationByBarCode(dto);
+        Produto produto = ProdutoMapper.dtoToEntity(dto);
+        return repository.save(produto);
+    }
+
+    @Override
+    public List<Produto> findAll()
+    {
+        return repository.findAll();
+    }
+
+    @Override
+    public Produto update(ProdutoDto dto)
+    {
+        validationByBarCode(dto);
+        return repository.save(ProdutoMapper.dtoToEntity(dto));
+    }
+
+    @Override
+    public Produto findByBarCode(String barCode)
+    {
+        Optional<Produto> findByBarCode = repository.findByBarCode(barCode);
+        return findByBarCode.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public void validationByBarCode(ProdutoDto dto)
+    {
+        final String dataIntegrityExceptionMessage = "Produto já cadastrado";
+        Optional<Produto> produto = repository.findByBarCode(dto.getBarCode());
+        if(produto.isPresent() && !produto.get().getIdProduto().equals(dto.getIdProduto()))
+        {
+            throw  new DataIntegrityException(dataIntegrityExceptionMessage);
+        }
+    }
+    @Override
+    public void delete(Integer id)
+    {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Produto softDelete(ProdutoDto dto)
+    {
+        validationByBarCode(dto);
+        Produto produto = ProdutoMapper.dtoToEntity(dto);
+        produto.setAtivo(false);
+        return produto;
+    }
+
+    @Override
+    public List<Pedido> findPedidosInProdutos(ProdutoDto dto)
+    {
+        VendaService vendaService = new VendaServiceImpl();
+        List<Venda> listVendas = vendaService.findByProduct(dto);
+        List<Pedido> pedidos = List.of();
+        listVendas.forEach(pedido -> pedidos.add(pedido.getPedido()));
+
+        return pedidos;
+    }
+
+    @Override
+    public List<Produto> findByPrecoLessThan(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoLessThan(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoLessThanEqual(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoLessThanEqual(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoGreaterThan(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoGreaterThan(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoGreaterThanEqual(Double preco)
+    {
+        Optional<List<Produto>> produtos = Optional.of(repository.findProdutosByPrecoGreaterThanEqual(preco));
+        return produtos.orElseThrow(() -> new ObjectNotFoundException(notFoundException));
+    }
+
+    @Override
+    public List<Produto> findByPrecoIn(List<Double> preco)
+    {
+        return repository.findProdutosByPrecoIn(preco);
+    }
+
+
+}
